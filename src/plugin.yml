@@ -4,3 +4,7 @@ author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: 1.15
 website: https://paxterya.com
+commands:
+  role:
+    description: Used to set or get roles of a player
+    usage: /<command> (set | get) <player>
