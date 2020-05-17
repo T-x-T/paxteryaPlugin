@@ -10,8 +10,6 @@ public class PaxteryaPlugin extends JavaPlugin {
   //Gets called once when plugin gets enabled
   @Override
   public void onEnable(){
-    //Initialize the role manager
-    RoleManager roleManager = new RoleManager();
 
     //Initialize the role command
     this.getCommand("role").setExecutor(new RoleCommand());
