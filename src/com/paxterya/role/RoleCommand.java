@@ -5,7 +5,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Set;
 
 public class RoleCommand implements CommandExecutor {
@@ -32,14 +35,12 @@ public class RoleCommand implements CommandExecutor {
         }
 
         if(playerExists){
-          sender.sendMessage("Player found :)");
-
           //Check which sub-command got used and call correct function
           if(args[0].equals("set")){
-            setRole(target, args[2]);
+            sender.sendMessage(setRole(target, args[2]));
           }else{
             if(args[0].equals("get")){
-              getRole(target);
+              sender.sendMessage(getRole(target, sender));
             }else{
               sender.sendMessage("something went horribly wrong");
             }
@@ -60,15 +61,50 @@ public class RoleCommand implements CommandExecutor {
   }
   //Sets the role of a single player
   private String setRole(OfflinePlayer player, String newRoleID){
-    String output = "";
 
+    //Set up local variables
+    String output = "";
+    String path = "./plugins/paxterya/roles/";
+    String strToWrite = newRoleID;
+
+    //Check if directory exists, create if not
+    File directory = new File(path);
+    if(!directory.exists()){
+      directory.mkdirs();
+    }
+
+    //Write file to directory with newRoleID as content
+    path += player.getUniqueId();
+    try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "utf-8"))) {
+      writer.write(strToWrite);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    output += "The role of player " + player.getName() + " is " + newRoleID;
     return output;
   }
 
   //Gets the role of a singe player
-  private String getRole(OfflinePlayer player){
-    String output = "";
+  private String getRole(OfflinePlayer player, CommandSender sender){
 
+    //Set up local variables
+    String output = "";
+    String path = "./plugins/paxterya/roles/" + player.getUniqueId();
+    String roleStr = "0";
+
+    //Read the contents of the file
+    try {
+      roleStr = new String(Files.readAllBytes(Paths.get(path)));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    //Parse str to int
+    int role = Integer.parseInt(roleStr);
+
+    //Form and return output
+    output += "The role of player " + player.getName() + " is " + role;
     return output;
   }
 }
