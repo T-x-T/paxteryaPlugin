@@ -4,11 +4,10 @@ import org.bukkit.OfflinePlayer;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
-public class RoleManager {
-  public RoleManager() {
+class RoleManager {
+  RoleManager() {
 
   }
 
@@ -47,6 +46,12 @@ public class RoleManager {
     String output = "";
     String path = "./plugins/paxterya/roles/" + player.getUniqueId();
     String roleStr = "0";
+
+    //Check if file exists, create if not
+    File fileToTest = new File(path);
+    if(!fileToTest.isFile()){
+      return player.getName() + " has no recorded role";
+    }
 
     //Read the contents of the file
     try {

@@ -1,9 +1,7 @@
 package com.paxterya.paxteryaplugin;
 
 import com.paxterya.role.RoleCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.paxterya.role.RoleManager;
 
 public class PaxteryaPlugin extends JavaPlugin {
 

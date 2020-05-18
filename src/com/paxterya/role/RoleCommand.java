@@ -41,6 +41,7 @@ public class RoleCommand implements CommandExecutor {
 
     if(!playerExists) {
       sender.sendMessage("Player wasn't found :(");
+      return true;
     }
 
     //Initialize roleManager
