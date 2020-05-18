@@ -35,7 +35,14 @@ class RoleManager {
       e.printStackTrace();
     }
 
-    output += "The role of player " + player.getName() + " is " + newRoleName;
+    //Set prefix in tab-list
+    if(player.isOnline()){
+      setPrefix(player, newRoleID);
+      output = "The role of player " + player.getName() + " is " + newRoleName;
+    }else{
+      output = "The prefix of the player won't be updated when the player isn't online! Saved changes to disk anyways.";
+    }
+
     return output;
   }
 
@@ -69,6 +76,10 @@ class RoleManager {
     //Form and return output
     output += "The role of player " + player.getName() + " is " + roleName;
     return output;
+  }
+
+  private void setPrefix(OfflinePlayer player, int roleID){
+    player.getPlayer().setPlayerListName(getPretty(roleID) + " " + player.getName());
   }
 
   protected String convert(int roleID){
@@ -115,6 +126,28 @@ class RoleManager {
 
       default:
         output = 0;
+        break;
+    }
+
+    return output;
+  }
+
+  private String getPretty(int roleID){
+    String output = "";
+
+    switch (roleID){
+      case 5:
+        output = "[§6mayor§r]";
+        break;
+      case 7:
+        output = "[§cmod§r]";
+        break;
+      case 9:
+        output = "[§4admin§r]";
+        break;
+
+      default:
+        output = "false";
         break;
     }
 
