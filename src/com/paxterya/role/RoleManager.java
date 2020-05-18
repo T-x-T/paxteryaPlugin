@@ -15,8 +15,7 @@ public class RoleManager {
   //Sets the role of a single player
   protected String setRole(OfflinePlayer player, String newRoleName){
     //Convert newRoleName to newRoleID
-    RoleManager roleManager = new RoleManager();
-    int newRoleID = roleManager.convert(newRoleName);
+    int newRoleID = convert(newRoleName);
 
     //Set up local variables
     String output = "";
@@ -60,8 +59,7 @@ public class RoleManager {
     int roleID = Integer.parseInt(roleStr);
 
     //Convert roleID to roleName
-    RoleManager roleManager = new RoleManager();
-    String roleName = roleManager.convert(roleID);
+    String roleName = convert(roleID);
 
     //Form and return output
     output += "The role of player " + player.getName() + " is " + roleName;
