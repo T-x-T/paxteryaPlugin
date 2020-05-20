@@ -1,20 +1,28 @@
 package com.paxterya.role;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 class RoleManager {
-  RoleManager() {
 
+  private JavaPlugin plugin;
+
+  RoleManager(JavaPlugin plugin) {
+    this.plugin = plugin;
   }
+
 
   //Sets the role of a single player
   protected String setRole(OfflinePlayer player, String newRoleName){
     //Convert newRoleName to newRoleID
-    int newRoleID = convert(newRoleName);
+    int newRoleID = getId(newRoleName);
 
     //Set up local variables
     String output = "";
@@ -71,7 +79,7 @@ class RoleManager {
     int roleID = Integer.parseInt(roleStr);
 
     //Convert roleID to roleName
-    String roleName = convert(roleID);
+    String roleName = getName(roleID);
 
     //Form and return output
     output += "The role of player " + player.getName() + " is " + roleName;
@@ -79,78 +87,50 @@ class RoleManager {
   }
 
   private void setPrefix(OfflinePlayer player, int roleID){
-    player.getPlayer().setPlayerListName(getPretty(roleID) + " " + player.getName());
-  }
+    //Get prefix
+    String prefix = getPrefix(roleID);
 
-  protected String convert(int roleID){
-    String output;
+    //Check if the prefix has a length, if not just set the players name (this is important to clear any preexisting prefixes)
+    if(prefix.length() == 0) {
+      player.getPlayer().setPlayerListName(player.getName());
+      return;
 
-    switch (roleID){
-      case 3:
-        output = "player";
-        break;
-      case 5:
-        output = "mayor";
-        break;
-      case 7:
-        output = "mod";
-        break;
-      case 9:
-        output = "admin";
-        break;
-
-      default:
-        output = "false";
-        break;
     }
 
-    return output;
+    //Prefix has length, set it
+    player.getPlayer().setPlayerListName(prefix + " " + player.getName());
   }
 
-  protected int convert(String roleName){
-    int output;
+  protected String getName(int roleID){
+    //Read in the list from the config
+    List<Map<String, String>> roles = (List<Map<String, String>>) plugin.getConfig().getList("roles");
 
-    switch (roleName){
-      case "player":
-        output = 3;
-        break;
-      case "mayor":
-        output = 5;
-        break;
-      case "mod":
-        output = 7;
-        break;
-      case "admin":
-        output = 9;
-        break;
+    //Iterate over the list and return the name of the Map that has the same id as roleID
+    for(Map<String, String> element : roles) if(element.get("id").equals(String.valueOf(roleID))) return element.get("name");
 
-      default:
-        output = 0;
-        break;
-    }
-
-    return output;
+    //When we get here, we didn't find a match
+    return "false";
   }
 
-  private String getPretty(int roleID){
-    String output = "";
+  protected int getId(String roleName){
+    //Read in the list from the config
+    List<Map<String, String>> roles = (List<Map<String, String>>) plugin.getConfig().getList("roles");
 
-    switch (roleID){
-      case 5:
-        output = "[§6mayor§r]";
-        break;
-      case 7:
-        output = "[§cmod§r]";
-        break;
-      case 9:
-        output = "[§4admin§r]";
-        break;
+    //Iterate over the list and return the name of the Map that has the same id as roleID
+    for(Map<String, String> element : roles) if(element.get("name").equals(roleName)) return Integer.parseInt(element.get("id"));
 
-      default:
-        output = "false";
-        break;
-    }
+    //When we get here, we didn't find a match
+    return 0;
+  }
 
-    return output;
+  private String getPrefix(int roleID){
+    //Read in the list from the config
+    List<Map<String, String>> roles = (List<Map<String, String>>) plugin.getConfig().getList("roles");
+
+    //Iterate over the list and return the name of the Map that has the same id as roleID
+    for(Map<String, String> element : roles) if(element.get("id").equals(String.valueOf(roleID)) && element.containsKey("prefix")) return element.get("prefix");
+
+    //When we get here, we didn't find a match
+    return "";
   }
 }

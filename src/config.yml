@@ -1,0 +1,20 @@
+roles:
+  -
+    id: '3'
+    name: 'player'
+  -
+    id: '4'
+    name: 'cool'
+    prefix: '[§bcool§r]'
+  -
+    id: '5'
+    name: 'mayor'
+    prefix: '[§6mayor§r]'
+  -
+    id: '7'
+    name: 'mod'
+    prefix: '[§cmod§r]'
+  -
+    id: '9'
+    name: 'admin'
+    prefix: '[§4admin§r]'

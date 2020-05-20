@@ -5,10 +5,19 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Set;
 
 public class RoleCommand implements CommandExecutor {
+
+  JavaPlugin plugin;
+  RoleManager roleManager;
+
+  public RoleCommand(JavaPlugin plugin) {
+    this.plugin = plugin;
+    roleManager = new RoleManager(plugin);
+  }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -44,15 +53,12 @@ public class RoleCommand implements CommandExecutor {
       return true;
     }
 
-    //Initialize roleManager
-    RoleManager roleManager = new RoleManager();
-
     //Check which sub-command got used and call correct function
     if(args[0].equals("set")){
 
       //Check if supplied roleName exists
-      if(!(args[2].equalsIgnoreCase("player") || args[2].equalsIgnoreCase("mayor") || args[2].equalsIgnoreCase("mod") || args[2].equalsIgnoreCase("admin"))){
-        sender.sendMessage("Valid roles are player, mayor, mod or admin! " + args[2] + " is NOT valid!");
+      if(!(args[2].equalsIgnoreCase("player") || args[2].equalsIgnoreCase("mayor") || args[2].equalsIgnoreCase("mod") || args[2].equalsIgnoreCase("admin") || args[2].equalsIgnoreCase("cool"))){
+        sender.sendMessage("Valid roles are player, cool, mayor, mod or admin! " + args[2] + " is NOT valid!");
         return true;
       }
 

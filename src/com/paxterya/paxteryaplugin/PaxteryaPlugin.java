@@ -5,12 +5,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
 
+  public PaxteryaPlugin(){
+
+  }
+
   //Gets called once when plugin gets enabled
   @Override
   public void onEnable(){
 
-    //Initialize the role command
-    this.getCommand("role").setExecutor(new RoleCommand());
+    //Save default config
+    this.saveDefaultConfig();
+
+    //Initialize the role package
+    RoleCommand roleCommand = new RoleCommand(this);
+    this.getCommand("role").setExecutor(roleCommand);
+
   }
 
   @Override
