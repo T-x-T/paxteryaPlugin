@@ -1,6 +1,10 @@
 name: paxterya
-version: 0.0.1
+version: 0.1.0
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: 1.15
 website: https://paxterya.com
+commands:
+  role:
+    description: Debug command to get role of a player
+    usage: /<command> get <player>
