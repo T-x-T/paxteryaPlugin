@@ -28,8 +28,8 @@ public class RoleCommand implements CommandExecutor {
       return true;
     }
 
-    //Check if the sender used a correct argument
-    if(!(args[0].equals("set") || args[0].equals("get"))) {
+    //Check if the sender used the correct argument
+    if(!args[0].equals("get")) {
       //No valid argument given
       return false;
     }
@@ -53,23 +53,12 @@ public class RoleCommand implements CommandExecutor {
       return true;
     }
 
-    //Check which sub-command got used and call correct function
-    if(args[0].equals("set")){
-
-      //Check if supplied roleName exists
-      if(!(args[2].equalsIgnoreCase("player") || args[2].equalsIgnoreCase("mayor") || args[2].equalsIgnoreCase("mod") || args[2].equalsIgnoreCase("admin") || args[2].equalsIgnoreCase("cool"))){
-        sender.sendMessage("Valid roles are player, cool, mayor, mod or admin! " + args[2] + " is NOT valid!");
-        return true;
-      }
-
-      sender.sendMessage(roleManager.setRole(target, args[2].toLowerCase()));
+    if(args[0].equals("get")){
+      sender.sendMessage(roleManager.getRole(target));
     }else{
-      if(args[0].equals("get")){
-        sender.sendMessage(roleManager.getRole(target));
-      }else{
-        sender.sendMessage("something went horribly wrong");
-      }
+      sender.sendMessage("something went horribly wrong");
     }
+
 
     //Just return true, because when we got here everything should be fine
     return true;

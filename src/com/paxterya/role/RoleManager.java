@@ -1,6 +1,7 @@
 package com.paxterya.role;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -20,12 +21,9 @@ class RoleManager {
 
 
   //Sets the role of a single player
-  protected String setRole(OfflinePlayer player, String newRoleName){
-    //Convert newRoleName to newRoleID
-    int newRoleID = getId(newRoleName);
+  protected void setRole(Player player, int newRoleID){
 
     //Set up local variables
-    String output = "";
     String path = "./plugins/paxterya/roles/";
     String strToWrite = String.valueOf(newRoleID);
 
@@ -44,14 +42,9 @@ class RoleManager {
     }
 
     //Set prefix in tab-list
-    if(player.isOnline()){
+    if(player.isOnline()) {
       setPrefix(player, newRoleID);
-      output = "The role of player " + player.getName() + " is " + newRoleName;
-    }else{
-      output = "The prefix of the player won't be updated when the player isn't online! Saved changes to disk anyways.";
     }
-
-    return output;
   }
 
   //Gets the role of a singe player
