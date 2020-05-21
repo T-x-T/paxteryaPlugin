@@ -8,3 +8,10 @@ commands:
   role:
     description: Debug command to get role of a player
     usage: /<command> get <player>
+  msg:
+    description: Sends a private message to a fellow player
+    usage: /<command> <Player> <message>
+    aliases: [w, dm]
+  r:
+    description: Reply to the last private message
+    usage: /<command> <message>
