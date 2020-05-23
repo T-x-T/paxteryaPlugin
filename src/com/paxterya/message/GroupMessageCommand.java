@@ -67,6 +67,12 @@ public class GroupMessageCommand  implements CommandExecutor {
       return true;
     }
 
+    //Sub-command list
+    if(args[0].equalsIgnoreCase("list")){
+      listParticipants(Bukkit.getPlayer(sender.getName()));
+      return true;
+    }
+
 
 
     //Seems like sender wants to create a new group dm; Go through args to find player names
@@ -86,6 +92,10 @@ public class GroupMessageCommand  implements CommandExecutor {
     //If we got here, the sender probably didn't supply correct arguments
     return false;
   }
+
+
+
+
 
   private void createGroupDM(Player creator, Player[] invitedPlayers){
     //Check if player already is in group DM
@@ -154,6 +164,28 @@ public class GroupMessageCommand  implements CommandExecutor {
   private void leaveGroupDm(Player player){
     participants.remove(player);
     player.sendMessage("§bYou left the group dm");
+  }
+
+  private void listParticipants(Player sender){
+    //Stop if sender isn't in group dm
+    if(!participants.containsKey(sender)){
+      sender.sendMessage("§4This command only makes sense when you are in a group DM!");
+      return;
+    }
+
+    StringBuilder msg = new StringBuilder();
+
+    msg.append("§bThe following players are in the same group DM as you: §9§l");
+
+    List<Player> recipientList = new ArrayList<Player>();
+    participants.forEach((player, id) -> {
+      if(id.equals(participants.get(sender))){
+        msg.append(player.getName());
+        msg.append(" ");
+      }
+    });
+
+    sender.sendMessage(msg.toString());
   }
 
   private void sendGroupDM(Player sender, String msg){
