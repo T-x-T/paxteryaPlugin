@@ -72,26 +72,8 @@ public class MessageCommand implements CommandExecutor {
   }
 
   private void msgCommand(CommandSender sender, Player recipient, String msg){
-    String finalMsg = "";
-
-    //Build the string to send to the recipient
-    finalMsg += "[§5DM§r] §9§l";
-    finalMsg += sender.getName();
-    finalMsg += "§7§o whispered: §r";
-    finalMsg += msg;
-
-    //Send the message to the recipient
-    recipient.sendMessage(finalMsg);
-
-    //Also send verification to sender
-    finalMsg = "";
-    finalMsg += "[§5DM§r]";
-    finalMsg += "§7§o you whispered to §9§l";
-    finalMsg += recipient.getName();
-    finalMsg += "§r: ";
-    finalMsg += msg;
-
-    sender.sendMessage(finalMsg);
+    DmSender dmSender = new DmSender(true, false);
+    dmSender.sendMsg(Bukkit.getPlayer(sender.getName()), recipient, msg);
 
     //Update lastReceived table to make /r work
     lastReceived.put(recipient, sender.getName());
