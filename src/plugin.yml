@@ -22,4 +22,4 @@ commands:
   gmsg:
     description: Send a private message to everone in your current group chat
     usage: /<command> message
-    aliases: [greply, gr]
+    aliases: [greply, gr, gm]

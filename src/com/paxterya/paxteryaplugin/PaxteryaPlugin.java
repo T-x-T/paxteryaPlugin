@@ -40,6 +40,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("greply").setExecutor(groupMessageCommand);
     this.getCommand("gmsg").setExecutor(groupMessageCommand);
     this.getCommand("gr").setExecutor(groupMessageCommand);
+    this.getCommand("gm").setExecutor(groupMessageCommand);
 
   }
 

@@ -39,7 +39,7 @@ public class GroupMessageCommand  implements CommandExecutor {
     }
 
     //Check if its the send message command
-    if(label.equalsIgnoreCase("gmsg") || label.equalsIgnoreCase("greply") || label.equalsIgnoreCase("gr")){
+    if(label.equalsIgnoreCase("gmsg") || label.equalsIgnoreCase("greply") || label.equalsIgnoreCase("gr") || label.equalsIgnoreCase("gm")){
       StringBuilder message = new StringBuilder();
       for (String arg : args) {
         message.append(arg);
