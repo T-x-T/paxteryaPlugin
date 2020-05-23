@@ -1,5 +1,5 @@
 name: paxterya
-version: 0.1.0
+version: 0.2.0
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: 1.15
@@ -8,3 +8,18 @@ commands:
   role:
     description: Debug command to get role of a player
     usage: /<command> get <player>
+  msg:
+    description: Sends a private message to a fellow player
+    usage: /<command> <Player> <message>
+    aliases: [w, dm]
+  r:
+    description: Reply to the last private message
+    usage: /<command> <message>
+  groupdm:
+    description: Create a new group chat; you can only be in one group chat at a time and it will get deleted on server restarts!; Can also be used to leave the current group chat
+    usage: /<command> <player1> <player2> ... <playerXX> OR /<command> leave
+    aliases: gdm
+  gmsg:
+    description: Send a private message to everone in your current group chat
+    usage: /<command> message
+    aliases: [greply, gr]

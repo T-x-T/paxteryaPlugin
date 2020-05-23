@@ -1,5 +1,7 @@
 package com.paxterya.paxteryaplugin;
 
+import com.paxterya.message.GroupMessageCommand;
+import com.paxterya.message.MessageCommand;
 import com.paxterya.role.RoleCommand;
 import com.paxterya.role.RoleUpdater;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +24,22 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("role").setExecutor(roleCommand);
     RoleUpdater roleUpdater = new RoleUpdater(this);
     this.getServer().getPluginManager().registerEvents(roleUpdater, this);
+
+
+
+    //Initialize message package
+    MessageCommand messageCommand = new MessageCommand(this);
+    this.getCommand("msg").setExecutor(messageCommand);
+    this.getCommand("dm").setExecutor(messageCommand);
+    this.getCommand("w").setExecutor(messageCommand);
+    this.getCommand("r").setExecutor(messageCommand);
+
+    GroupMessageCommand groupMessageCommand = new GroupMessageCommand(this);
+    this.getCommand("groupdm").setExecutor(groupMessageCommand);
+    this.getCommand("gdm").setExecutor(groupMessageCommand);
+    this.getCommand("greply").setExecutor(groupMessageCommand);
+    this.getCommand("gmsg").setExecutor(groupMessageCommand);
+    this.getCommand("gr").setExecutor(groupMessageCommand);
 
   }
 
