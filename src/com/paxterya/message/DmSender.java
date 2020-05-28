@@ -22,7 +22,7 @@ public class DmSender {
       finalMsg += "[§5DM§r] §9§l";
     }
     finalMsg += sender.getName();
-    finalMsg += "§7§o whispered: §r";
+    finalMsg += "§7§o whispered: §e";
     finalMsg += msg;
 
     //Send the message to the recipient
@@ -39,7 +39,7 @@ public class DmSender {
     }
     finalMsg += "§7§o you whispered to §9§l";
     finalMsg += recipient.getName();
-    finalMsg += "§r: ";
+    finalMsg += "§r: §7";
     finalMsg += msg;
 
     sender.sendMessage(finalMsg);
