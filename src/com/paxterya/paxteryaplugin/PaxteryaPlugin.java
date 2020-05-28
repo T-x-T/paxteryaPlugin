@@ -1,10 +1,12 @@
 package com.paxterya.paxteryaplugin;
 
 import com.paxterya.message.GroupMessageCommand;
+import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.role.RoleCommand;
 import com.paxterya.role.RoleUpdater;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
@@ -41,6 +43,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("w").setTabCompleter(messageTabCompleter);
     this.getCommand("r").setTabCompleter(messageTabCompleter);
 
+
     GroupMessageCommand groupMessageCommand = new GroupMessageCommand(this);
     this.getCommand("groupdm").setExecutor(groupMessageCommand);
     this.getCommand("gdm").setExecutor(groupMessageCommand);
@@ -48,6 +51,14 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("gmsg").setExecutor(groupMessageCommand);
     this.getCommand("gr").setExecutor(groupMessageCommand);
     this.getCommand("gm").setExecutor(groupMessageCommand);
+
+    GroupMessageTabCompleter groupMessageTabCompleter = new GroupMessageTabCompleter(this);
+    this.getCommand("groupdm").setTabCompleter(groupMessageTabCompleter);
+    this.getCommand("gdm").setTabCompleter(groupMessageTabCompleter);
+    this.getCommand("greply").setTabCompleter(groupMessageTabCompleter);
+    this.getCommand("gmsg").setTabCompleter(groupMessageTabCompleter);
+    this.getCommand("gr").setTabCompleter(groupMessageTabCompleter);
+    this.getCommand("gm").setTabCompleter(groupMessageTabCompleter);
 
   }
 
