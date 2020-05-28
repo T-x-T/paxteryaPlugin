@@ -39,7 +39,7 @@ public class DmSender {
     }
     finalMsg += "§7§o you whispered to §9§l";
     finalMsg += recipient.getName();
-    finalMsg += "§r: ";
+    finalMsg += "§r: §e";
     finalMsg += msg;
 
     sender.sendMessage(finalMsg);
