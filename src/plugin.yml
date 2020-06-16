@@ -23,3 +23,6 @@ commands:
     description: Send a private message to everone in your current group chat
     usage: /<command> message
     aliases: [greply, gr, gm]
+  afk:
+    description: Manually toggle afk state
+    usage: /<command> to go afk and /<command> again to go un-afk
