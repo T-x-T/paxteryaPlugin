@@ -1,5 +1,5 @@
 name: paxterya
-version: 0.2.2
+version: 0.3.0
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: 1.15
