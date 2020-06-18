@@ -70,6 +70,8 @@ public class PaxteryaPlugin extends JavaPlugin {
 
     this.getCommand("afk").setExecutor(new AfkCommandHandler(this, afkCore));
     this.getCommand("afk").setTabCompleter(new AfkCommandTabCompleter(this));
+
+    this.getServer().getPluginManager().registerEvents(autoAfkManager, this);
   }
 
   @Override
