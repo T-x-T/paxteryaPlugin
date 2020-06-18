@@ -1,12 +1,15 @@
 package com.paxterya.paxteryaplugin;
 
+import com.paxterya.afk.AfkCommandHandler;
+import com.paxterya.afk.AfkCommandTabCompleter;
+import com.paxterya.afk.AfkCore;
+import com.paxterya.afk.AutoAfkManager;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.role.RoleCommand;
 import com.paxterya.role.RoleUpdater;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
@@ -60,6 +63,15 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("gr").setTabCompleter(groupMessageTabCompleter);
     this.getCommand("gm").setTabCompleter(groupMessageTabCompleter);
 
+
+    //Initialize afk package
+    AfkCore afkCore = new AfkCore(this);
+    AutoAfkManager autoAfkManager = new AutoAfkManager(this, afkCore);
+
+    this.getCommand("afk").setExecutor(new AfkCommandHandler(this, afkCore));
+    this.getCommand("afk").setTabCompleter(new AfkCommandTabCompleter(this));
+
+    this.getServer().getPluginManager().registerEvents(autoAfkManager, this);
   }
 
   @Override

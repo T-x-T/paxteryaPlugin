@@ -11,17 +11,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RoleManager {
+public class RoleManager {
 
   private JavaPlugin plugin;
 
-  RoleManager(JavaPlugin plugin) {
+  public RoleManager(JavaPlugin plugin) {
     this.plugin = plugin;
   }
 
 
   //Sets the role of a single player
-  protected void setRole(Player player, int newRoleID){
+  public void setRole(Player player, int newRoleID){
 
     //Set up local variables
     String path = "./plugins/paxterya/roles/";
@@ -45,6 +45,30 @@ class RoleManager {
     if(player.isOnline()) {
       setPrefix(player, newRoleID);
     }
+  }
+
+  //Gets the roleID of a single player
+  public int getRoleId(Player player){
+
+    //Set up local variables
+    String output = "";
+    String path = "./plugins/paxterya/roles/" + player.getUniqueId();
+    String roleStr = "0";
+
+    //Check if file exists, create if not
+    File fileToTest = new File(path);
+    if(!fileToTest.isFile()){
+      return 0;
+    }
+
+    //Read the contents of the file
+    try {
+      roleStr = new String(Files.readAllBytes(Paths.get(path)));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return Integer.parseInt(roleStr);
   }
 
   //Gets the role of a singe player
