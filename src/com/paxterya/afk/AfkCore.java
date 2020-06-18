@@ -71,7 +71,7 @@ public class AfkCore {
 
   private void broadcastAfk(Player player){
     Bukkit.getServer().broadcastMessage(String.format("§8§l%s §r§3is now afk", player.getDisplayName()));
-    player.sendTitle("§4You are now AFK", "Move more than three blocks or use /afk to tell everyone you're back", 10, 200, 10);
+    player.sendTitle("§4You are now AFK", "Move a bit or use /afk once you're back", 10, 200, 10);
   }
 
   private void broadcastUnAfk(Player player){
@@ -80,7 +80,7 @@ public class AfkCore {
       return;
     }
     Bukkit.getServer().broadcastMessage(String.format("§2§l%s §r§3is no longer afk", player.getDisplayName()));
-    player.sendTitle("§2You are no longer AFK", "Welcome back! Stand still for 2 Minutes or use /afk to go afk again", 10, 70, 10);
+    player.sendTitle("§2You are no longer AFK", "Idle for 2 Minutes or use /afk to go afk again", 10, 70, 10);
   }
 
   private void setTabList(Player player){

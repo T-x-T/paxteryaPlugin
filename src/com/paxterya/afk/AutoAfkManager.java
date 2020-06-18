@@ -1,6 +1,7 @@
 package com.paxterya.afk;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,6 +63,7 @@ public class AutoAfkManager implements Listener {
   }
 
   private void resetLastActionTime(Player player){
+    if(player.getGameMode() != GameMode.SURVIVAL) return;
     this.lastActionTimes.replace(player, System.currentTimeMillis());
     if(afkCore.getAfkState(player)) afkCore.setAfkState(player, false);
   }
@@ -83,6 +85,7 @@ public class AutoAfkManager implements Listener {
   }
 
   private void updateAfk(Player player){
+    if(player.getGameMode() != GameMode.SURVIVAL) return;
     if(!afkCore.getAfkState(player) && getLastActionTime(player) + afkTime <= System.currentTimeMillis()){
       afkCore.setAfkState(player, true);
     }
