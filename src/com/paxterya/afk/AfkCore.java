@@ -80,7 +80,7 @@ public class AfkCore {
       return;
     }
     Bukkit.getServer().broadcastMessage(String.format("§2§l%s §r§3is no longer afk", player.getDisplayName()));
-    player.sendTitle("§2You are no longer AFK", "Idle for 2 Minutes or use /afk to go afk again", 10, 70, 10);
+    player.sendTitle("§2You are no longer AFK", "Idle for 5 Minutes or use /afk to go afk again", 10, 70, 10);
   }
 
   private void setTabList(Player player){

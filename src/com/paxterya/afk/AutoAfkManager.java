@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.nio.BufferUnderflowException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class AutoAfkManager implements Listener {
     this.afkCore = afkCore;
     this.lastActionTimes = new HashMap<>();
     this.lastPositions = new HashMap<>();
-    this.afkTime = 1000 * 60 * 2;
+    this.afkTime = 1000 * 60 * 5;
     updateAfkTimer();
   }
 
@@ -47,7 +48,12 @@ public class AutoAfkManager implements Listener {
     location = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
 
     if(afkCore.getAfkState(player)){
-      if(location.distance(lastPositions.get(player)) > 0 && lastPositions.get(player).distance(afkCore.getAfkLocation(player)) > 3) {
+      //Before trying to calculate distance between position we need to make sure both positions are in the same dimension
+      if(afkCore.getAfkLocation(player).getWorld().getUID().toString().equals(player.getLocation().getWorld().getUID().toString())){
+        if(getLastLocation(player).distance(afkCore.getAfkLocation(player)) > 3) {
+          resetLastActionTime(player);
+        }
+      }else{
         resetLastActionTime(player);
       }
     }else{
@@ -100,6 +106,17 @@ public class AutoAfkManager implements Listener {
     }
 
     return lastActionTime;
+  }
+
+  private Location getLastLocation(Player player){
+    Location location = lastPositions.get(player);
+
+    if(location == null){
+      registerPlayer(player);
+      location = lastPositions.get(player);
+    }
+
+    return location;
   }
 
   private void registerPlayer(Player player){
