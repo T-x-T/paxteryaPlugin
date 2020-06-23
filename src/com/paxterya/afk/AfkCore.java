@@ -6,7 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.StringUtil;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +19,15 @@ public class AfkCore {
   JavaPlugin plugin;
   Map<Player, Boolean> afkStates;
   Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
+  Map<Player, Long> afkTimes; //The time in millis when the player went afk
   List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
 
   public AfkCore(JavaPlugin plugin){
     this.plugin = plugin;
     afkStates = new HashMap<>();
     newPlayers = new ArrayList<>();
-    this.afkPositions = new HashMap<>();
+    afkPositions = new HashMap<>();
+    afkTimes = new HashMap<>();
   }
 
   public void setAfkState(Player player, Boolean newState){
@@ -35,6 +40,7 @@ public class AfkCore {
       broadcastAfk(player);
       setTabList(player);
       afkPositions.put(player, player.getLocation());
+      afkTimes.put(player, System.currentTimeMillis());
     }else{
       broadcastUnAfk(player);
       resetTabList(player);
@@ -79,7 +85,16 @@ public class AfkCore {
       newPlayers.remove(player);
       return;
     }
-    Bukkit.getServer().broadcastMessage(String.format("§2§l%s §r§3is no longer afk", player.getDisplayName()));
+    String displayName = player.getDisplayName();
+    double afkTime = (System.currentTimeMillis() - afkTimes.get(player)) / 1000.0 / 60.0; //Minutes
+    String afkTimeStr = "";
+    if(afkTime >= 60){
+      afkTimeStr += String.valueOf(Math.round(afkTime / 60.0)) + "h";
+      afkTime = afkTime % 60;
+    }
+    afkTimeStr += String.valueOf(Math.round(afkTime)) + "m";
+
+    Bukkit.getServer().broadcastMessage(String.format("§2§l%1$s §r§3is back after %2$s", displayName, afkTimeStr));
     player.sendTitle("§2You are no longer AFK", "Idle for 5 Minutes or use /afk to go afk again", 10, 70, 10);
   }
 
