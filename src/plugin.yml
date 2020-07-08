@@ -1,8 +1,8 @@
 name: paxterya
-version: 0.3.2
+version: 0.3.3
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
-api-version: 1.15
+api-version: "1.16"
 website: https://paxterya.com
 commands:
   role:
