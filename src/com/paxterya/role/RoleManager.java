@@ -127,6 +127,10 @@ class RoleManager {
       attachment.setPermission(permission, true);
     });
     player.recalculatePermissions();
+    boolean opStatus = player.isOp();
+    player.setOp(true);
+    player.setOp(false);
+    player.setOp(opStatus);
   }
 
   private List<String> getAllPermissionsByRoleID(int roleID){
