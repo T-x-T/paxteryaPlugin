@@ -1,9 +1,11 @@
 package com.paxterya.tablistNameWrapper;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TablistNameWrapper {
@@ -18,7 +20,7 @@ public class TablistNameWrapper {
   }
 
   public void addPrefixIfNoPrefixSet(Player player, String prefix){
-    if(prefixes.containsKey(player)) addPrefix(player, prefix);
+    if(!prefixes.containsKey(player)) addPrefix(player, prefix);
   }
 
   public void addPrefix(Player player, String prefix){
@@ -27,7 +29,7 @@ public class TablistNameWrapper {
   }
 
   public void addSuffixIfNoSuffixSet(Player player, String suffix){
-    if(suffixes.containsKey(player)) addSuffix(player, suffix);
+    if(!suffixes.containsKey(player)) addSuffix(player, suffix);
   }
 
   public void addSuffix(Player player, String suffix){

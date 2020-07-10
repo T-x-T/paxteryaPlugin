@@ -1,12 +1,10 @@
 package com.paxterya.role;
 
 import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import com.paxterya.paxteryaplugin.PaxteryaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -16,13 +14,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 
 public class RoleUpdater implements Listener {
 
-  JavaPlugin plugin;
+  PaxteryaPlugin plugin;
 
-  public RoleUpdater(JavaPlugin plugin){
+  public RoleUpdater(PaxteryaPlugin plugin){
     this.plugin = plugin;
   }
 

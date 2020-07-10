@@ -8,30 +8,29 @@ import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
-import com.paxterya.role.RoleCommand;
 import com.paxterya.role.RoleUpdater;
+import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
 
-  public PaxteryaPlugin(){
+  private TablistNameWrapper tablistNameWrapper;
 
+  public PaxteryaPlugin(){
+    this.tablistNameWrapper = new TablistNameWrapper(this);
   }
 
   //Gets called once when plugin gets enabled
   @Override
   public void onEnable(){
-
+    this.tablistNameWrapper = new TablistNameWrapper(this);
     //Save default config
     this.saveDefaultConfig();
 
     //Initialize the role package
-    RoleCommand roleCommand = new RoleCommand(this);
-    this.getCommand("role").setExecutor(roleCommand);
     RoleUpdater roleUpdater = new RoleUpdater(this);
     this.getServer().getPluginManager().registerEvents(roleUpdater, this);
-
-
+    
 
     //Initialize message package
     MessageCommand messageCommand = new MessageCommand(this);
@@ -78,6 +77,10 @@ public class PaxteryaPlugin extends JavaPlugin {
   //Get called once when plugin gets disabled
   public void onDisable(){
 
+  }
+
+  public TablistNameWrapper getTablistNameWrapper(){
+    return tablistNameWrapper;
   }
 
 }

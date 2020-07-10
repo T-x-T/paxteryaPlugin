@@ -1,38 +1,36 @@
 package com.paxterya.afk;
 
+import com.paxterya.paxteryaplugin.PaxteryaPlugin;
 import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AfkCore {
-  JavaPlugin plugin;
+  PaxteryaPlugin plugin;
   Map<Player, Boolean> afkStates;
   Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
   Map<Player, Long> afkTimes; //The time in millis when the player went afk
   List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
   TablistNameWrapper tablistNameWrapper;
 
-  public AfkCore(JavaPlugin plugin){
+  public AfkCore(PaxteryaPlugin plugin){
     this.plugin = plugin;
     afkStates = new HashMap<>();
     newPlayers = new ArrayList<>();
     afkPositions = new HashMap<>();
     afkTimes = new HashMap<>();
-    tablistNameWrapper = new TablistNameWrapper(plugin);
+    tablistNameWrapper = this.plugin.getTablistNameWrapper();
   }
 
   public void setAfkState(Player player, Boolean newState){
-    if(afkStates.containsKey(player)){
-      afkStates.replace(player, newState);
-    }else{
-      afkStates.put(player, newState);
-    }
+    afkStates.put(player, newState);
     if(newState){
       broadcastAfk(player);
       setTabList(player);
