@@ -14,7 +14,18 @@ roles:
     id: '7'
     name: 'mod'
     prefix: '[§cmod§r]'
+    permissions:
+      - 'minecraft.command.ban'
+      - 'minecraft.command.banlist'
+      - 'minecraft.command.gamemode'
+      - 'minecraft.command.kick'
+      - 'minecraft.command.list'
+      - 'minecraft.command.teleport'
+      - 'bukkit.command.tps'
+      - 'coreprotect.*'
   -
     id: '9'
     name: 'admin'
     prefix: '[§4admin§r]'
+    permissions:
+      - 'minecraft.command.teleport'

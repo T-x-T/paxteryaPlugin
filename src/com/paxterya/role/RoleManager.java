@@ -2,18 +2,20 @@ package com.paxterya.role;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class RoleManager {
 
-  private JavaPlugin plugin;
+  private final JavaPlugin plugin;
 
   public RoleManager(JavaPlugin plugin) {
     this.plugin = plugin;
@@ -35,15 +37,16 @@ public class RoleManager {
 
     //Write file to directory with newRoleID as content
     path += player.getUniqueId();
-    try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "utf-8"))) {
+    try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8))) {
       writer.write(strToWrite);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    //Set prefix in tab-list
+    //Set prefix in tab-list and set permissions
     if(player.isOnline()) {
       setPrefix(player, newRoleID);
+      setPermissions(player, newRoleID);
     }
   }
 
@@ -119,14 +122,12 @@ public class RoleManager {
   }
 
   protected String getName(int roleID){
-    //Read in the list from the config
-    List<Map<String, String>> roles = (List<Map<String, String>>) plugin.getConfig().getList("roles");
-
-    //Iterate over the list and return the name of the Map that has the same id as roleID
-    for(Map<String, String> element : roles) if(element.get("id").equals(String.valueOf(roleID))) return element.get("name");
-
-    //When we get here, we didn't find a match
-    return "false";
+    try{
+      Map<String, String> config = getConfigOfRoleID(roleID);
+      return config.get("name");
+    }catch (NullPointerException e){
+      return "false";
+    }
   }
 
   protected int getId(String roleName){
@@ -141,13 +142,48 @@ public class RoleManager {
   }
 
   private String getPrefix(int roleID){
-    //Read in the list from the config
+    try{
+      Map<String, String> config = getConfigOfRoleID(roleID);
+      return config.get("prefix");
+    }catch (NullPointerException e){
+      return "";
+    }
+  }
+
+  private void setPermissions(Player player, int newRoleID){
+    List<String> permissions = getAllPermissionsByRoleID(newRoleID);
+    PermissionAttachment attachment = player.addAttachment(plugin);
+    permissions.forEach((permission) -> {
+      attachment.setPermission(permission, true);
+    });
+    player.recalculatePermissions();
+  }
+
+  private List<String> getAllPermissionsByRoleID(int roleID){
+    List<String> permissions = new ArrayList<String>();
+    for(int i = roleID; i >= 0; i--){
+      try{
+        permissions.addAll(getPermissionsByRoleID(i));
+      }catch (NullPointerException ignored){}
+    }
+    return permissions;
+  }
+
+  private List<String> getPermissionsByRoleID(int roleID) throws NullPointerException {
+    List<?> roles = plugin.getConfig().getList("roles");
+    for(Object element : roles){
+      Map<String, String> stringMap = (Map<String, String>)element;
+      if(stringMap.get("id").equals(String.valueOf(roleID))){
+        Map<String, List<String>> listMap = (Map<String, List<String>>)element;
+        return listMap.get("permissions");
+      }
+    }
+    throw new NullPointerException();
+  }
+
+  private Map<String, String> getConfigOfRoleID(int roleID) throws NullPointerException{
     List<Map<String, String>> roles = (List<Map<String, String>>) plugin.getConfig().getList("roles");
-
-    //Iterate over the list and return the name of the Map that has the same id as roleID
-    for(Map<String, String> element : roles) if(element.get("id").equals(String.valueOf(roleID)) && element.containsKey("prefix")) return element.get("prefix");
-
-    //When we get here, we didn't find a match
-    return "";
+    for(Map<String, String> element : roles) if(element.get("id").equals(String.valueOf(roleID))) return element;
+    throw new NullPointerException();
   }
 }
