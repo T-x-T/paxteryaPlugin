@@ -1,9 +1,10 @@
 package com.paxterya.role;
 
+import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,20 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RoleManager {
+class RoleManager {
 
-  private final JavaPlugin plugin;
+  private final Plugin plugin;
+  private final String roleFolderPath;
 
-  public RoleManager(JavaPlugin plugin) {
+  protected RoleManager(Plugin plugin) {
     this.plugin = plugin;
+    this.roleFolderPath = "./plugins/paxterya/roles/";
   }
 
 
   //Sets the role of a single player
-  public void setRole(Player player, int newRoleID){
-
-    //Set up local variables
-    String path = "./plugins/paxterya/roles/";
+  protected void setRole(Player player, int newRoleID){
+    String path = roleFolderPath;
     String strToWrite = String.valueOf(newRoleID);
 
     //Check if directory exists, create if not
@@ -50,28 +51,8 @@ public class RoleManager {
     }
   }
 
-  //Gets the roleID of a single player
-  public int getRoleId(Player player){
+  private void saveNewRole(Player player, int newRoleID){
 
-    //Set up local variables
-    String output = "";
-    String path = "./plugins/paxterya/roles/" + player.getUniqueId();
-    String roleStr = "0";
-
-    //Check if file exists, create if not
-    File fileToTest = new File(path);
-    if(!fileToTest.isFile()){
-      return 0;
-    }
-
-    //Read the contents of the file
-    try {
-      roleStr = new String(Files.readAllBytes(Paths.get(path)));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return Integer.parseInt(roleStr);
   }
 
   //Gets the role of a singe player
@@ -79,7 +60,7 @@ public class RoleManager {
 
     //Set up local variables
     String output = "";
-    String path = "./plugins/paxterya/roles/" + player.getUniqueId();
+    String path = roleFolderPath + player.getUniqueId();
     String roleStr = "0";
 
     //Check if file exists, create if not
@@ -106,19 +87,8 @@ public class RoleManager {
     return output;
   }
 
-  private void setPrefix(OfflinePlayer player, int roleID){
-    //Get prefix
-    String prefix = getPrefix(roleID);
-
-    //Check if the prefix has a length, if not just set the players name (this is important to clear any preexisting prefixes)
-    if(prefix.length() == 0) {
-      player.getPlayer().setPlayerListName(player.getName());
-      return;
-
-    }
-
-    //Prefix has length, set it
-    player.getPlayer().setPlayerListName(prefix + " " + player.getName());
+  private void setPrefix(Player player, int roleID){
+    new TablistNameWrapper(plugin).addPrefixIfNoPrefixSet(player, getPrefix(roleID));
   }
 
   protected String getName(int roleID){

@@ -1,15 +1,10 @@
 package com.paxterya.afk;
 
-import com.paxterya.role.RoleManager;
-import com.sun.istack.internal.Nullable;
+import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.StringUtil;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +16,7 @@ public class AfkCore {
   Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
   Map<Player, Long> afkTimes; //The time in millis when the player went afk
   List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
+  TablistNameWrapper tablistNameWrapper;
 
   public AfkCore(JavaPlugin plugin){
     this.plugin = plugin;
@@ -28,6 +24,7 @@ public class AfkCore {
     newPlayers = new ArrayList<>();
     afkPositions = new HashMap<>();
     afkTimes = new HashMap<>();
+    tablistNameWrapper = new TablistNameWrapper(plugin);
   }
 
   public void setAfkState(Player player, Boolean newState){
@@ -99,11 +96,10 @@ public class AfkCore {
   }
 
   private void setTabList(Player player){
-    player.setPlayerListName(player.getPlayerListName() + " §8[AFK]");
+    tablistNameWrapper.addSuffixIfNoSuffixSet(player, "§8[AFK]");
   }
 
   private void resetTabList(Player player){
-    RoleManager roleManager = new RoleManager(this.plugin);
-    roleManager.setRole(player, roleManager.getRoleId(player));
+    tablistNameWrapper.removeAllSuffixes(player);
   }
 }
