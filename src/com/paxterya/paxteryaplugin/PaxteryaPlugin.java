@@ -10,6 +10,7 @@ import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.role.RoleUpdater;
 import com.paxterya.tablistNameWrapper.TablistNameWrapper;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
