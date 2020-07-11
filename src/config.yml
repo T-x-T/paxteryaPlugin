@@ -29,3 +29,11 @@ roles:
     prefix: '[§4admin§r]'
     permissions:
       - 'minecraft.command.teleport'
+
+replacer_rules:
+#Syntax: <word to replace>: '<replacement>'. Keywords that are replaced with player information are: 'PLAYER_COORDS', 'PLAYER_FULLCOORDS'
+  -
+    mycoords: 'PLAYER_COORDS'
+    myfullcoords: 'PLAYER_FULLCOORDS'
+    ping: 'pong'
+    youcantsendthisinchat: ''
