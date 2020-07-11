@@ -40,7 +40,7 @@ public class TablistNameWrapper {
   public void removeAllPrefixes(Player player){
     prefixes.remove(player);
     String suffixToSet = suffixes.get(player);
-    if(suffixToSet.length() > 0){
+    if(suffixToSet != null){
       player.setPlayerListName(player.getName() + " " + suffixToSet);
     }else{
       resetTablistNameToDefault(player);
@@ -50,7 +50,7 @@ public class TablistNameWrapper {
   public void removeAllSuffixes(Player player){
     suffixes.remove(player);
     String prefixToSet = prefixes.get(player);
-    if(prefixToSet.length() > 0){
+    if(prefixToSet != null){
       player.setPlayerListName(prefixToSet + " " + player.getName());
     }else{
       resetTablistNameToDefault(player);
