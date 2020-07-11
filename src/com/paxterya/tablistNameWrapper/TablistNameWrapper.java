@@ -39,11 +39,25 @@ public class TablistNameWrapper {
 
   public void removeAllPrefixes(Player player){
     prefixes.remove(player);
-    player.setPlayerListName(player.getName() + " " + suffixes.get(player));
+    String suffixToSet = suffixes.get(player);
+    if(suffixToSet.length() > 0){
+      player.setPlayerListName(player.getName() + " " + suffixToSet);
+    }else{
+      resetTablistNameToDefault(player);
+    }
   }
 
   public void removeAllSuffixes(Player player){
     suffixes.remove(player);
-    player.setPlayerListName(prefixes.get(player) + " " + player.getName());
+    String prefixToSet = prefixes.get(player);
+    if(prefixToSet.length() > 0){
+      player.setPlayerListName(prefixToSet + " " + player.getName());
+    }else{
+      resetTablistNameToDefault(player);
+    }
+  }
+
+  private void resetTablistNameToDefault(Player player){
+    player.setPlayerListName(player.getName());
   }
 }

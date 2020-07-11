@@ -30,7 +30,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize the role package
     RoleUpdater roleUpdater = new RoleUpdater(this);
     this.getServer().getPluginManager().registerEvents(roleUpdater, this);
-    
+
 
     //Initialize message package
     MessageCommand messageCommand = new MessageCommand(this);

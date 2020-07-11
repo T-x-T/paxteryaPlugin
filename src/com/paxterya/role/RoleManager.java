@@ -30,7 +30,10 @@ class RoleManager {
   }
 
   private void setPrefix(Player player, int roleID){
-    tablistNameWrapper.addPrefixIfNoPrefixSet(player, getPrefix(roleID));
+    String prefixToSet = getPrefix(roleID);
+    if(prefixToSet.length() > 0){
+      tablistNameWrapper.addPrefixIfNoPrefixSet(player, prefixToSet);
+    }
   }
 
   private String getPrefix(int roleID){
