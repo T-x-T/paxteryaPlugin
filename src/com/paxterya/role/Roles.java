@@ -25,10 +25,20 @@ public class Roles {
 
 
   public Role getRoleById(int id){
-
+    for(Role role : roles){
+      if(role.getId() == id){
+        return role;
+      }
+    }
+    throw new NullPointerException("No role with the given id found");
   }
 
   public Role getRoleByName(String name){
-
+    for(Role role : roles){
+      if(role.getName().equalsIgnoreCase(name)){
+        return role;
+      }
+    }
+    throw new NullPointerException("No role with the given name found");
   }
 }

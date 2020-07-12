@@ -3,10 +3,6 @@ package com.paxterya.role;
 import com.google.gson.JsonParser;
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -16,35 +12,21 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RoleUpdater implements Listener {
+class RoleOfPlayerFromServerFetcher {
 
   PaxteryaPlugin plugin;
-  RoleManager roleManager;
 
-  public RoleUpdater(PaxteryaPlugin plugin){
+  protected RoleOfPlayerFromServerFetcher(PaxteryaPlugin plugin){
     this.plugin = plugin;
-    this.roleManager = new RoleManager(this.plugin);
   }
 
-  @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent event){
-    new BukkitRunnable(){
-      @Override
-      public void run() {
-        updateRole(event.getPlayer());
-      }
-    }.runTaskAsynchronously(this.plugin);
-  }
-
-  private void updateRole(Player player){
+  protected static int getRoleIdForPlayer(Player player){
     String uuid = getUuidInShortForm(player);
     int role = getRoleFromApi(uuid);
-    if(RoleTools.isRoleIdValid(role)){
-      roleManager.setRole(player, role);
-    }
+    return role;
   }
 
-  private String getUuidInShortForm(Player player){
+  private static String getUuidInShortForm(Player player){
     String uuid = player.getUniqueId().toString();
     while(uuid.contains("-")){
       uuid = uuid.replace("-", "");
@@ -52,7 +34,7 @@ public class RoleUpdater implements Listener {
     return uuid;
   }
 
-  private int getRoleFromApi(String uuid) {
+  private static int getRoleFromApi(String uuid) {
     try{
       URL url = getRequestUrl(uuid);
       assert url != null;
@@ -72,7 +54,7 @@ public class RoleUpdater implements Listener {
     return -1;
   }
 
-  private URL getRequestUrl(String uuid){
+  private static URL getRequestUrl(String uuid){
     try {
       return new URL("https://paxterya.com/api/roles?uuid=" + uuid);
     } catch (MalformedURLException ignore) {} //Can be safely ignored, will never happen
