@@ -1,7 +1,7 @@
 package com.paxterya.role;
 
+import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
-import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +17,11 @@ public class PlayerRoleUpdater implements Listener {
 
   private final PaxteryaPlugin plugin;
   private final Map<Player, Role> playerRoleMappings;
-  private final TablistNameWrapper tablistNameWrapper;
   private final Roles allRoles;
 
   public PlayerRoleUpdater(PaxteryaPlugin plugin) {
     this.plugin = plugin;
     this.playerRoleMappings = new HashMap<>();
-    this.tablistNameWrapper = this.plugin.getTablistNameWrapper();
     this.allRoles = this.plugin.getRoles();
   }
 
@@ -47,7 +45,7 @@ public class PlayerRoleUpdater implements Listener {
   private void setPrefix(Player player){
     String prefixToSet = playerRoleMappings.get(player).getPrefix();
     if(prefixToSet != null){
-      tablistNameWrapper.addPrefixIfNoPrefixSet(player, prefixToSet);
+      new PaxteryaPlayer(plugin, player).setPrefix(prefixToSet);
     }
   }
 
