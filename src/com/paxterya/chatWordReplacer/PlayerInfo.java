@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Iterator;
 
 public class PlayerInfo {
-        public static String coordsAsString(Player player) {
+    public static String coordsAsString(Player player) {
         return String.format(
                 "%s%s %s%s ",
                 ChatColor.YELLOW,
