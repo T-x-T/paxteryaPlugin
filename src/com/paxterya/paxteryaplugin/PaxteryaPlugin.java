@@ -10,7 +10,7 @@ import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.role.RoleUpdater;
 import com.paxterya.tablistNameWrapper.TablistNameWrapper;
-import com.paxterya.wordReplacer.WordReplacer;
+import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaxteryaPlugin extends JavaPlugin {
@@ -75,8 +75,8 @@ public class PaxteryaPlugin extends JavaPlugin {
 
 
     //Initialize wordReplacer
-    WordReplacer wordReplacer = new WordReplacer(this);
-    this.getServer().getPluginManager().registerEvents(wordReplacer.getListener(), this);
+    ChatWordReplacer chatWordReplacer = new ChatWordReplacer(this);
+    this.getServer().getPluginManager().registerEvents(chatWordReplacer, this);
   }
 
   @Override

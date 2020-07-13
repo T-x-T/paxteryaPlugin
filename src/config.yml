@@ -35,5 +35,5 @@ replacer_rules:
   -
     mycoords: 'PLAYER_COORDS'
     myfullcoords: 'PLAYER_FULLCOORDS'
-    ping: 'pong'
-    youcantsendthisinchat: ''
+    mytool: 'PLAYER_TOOL'
+    mydias: 'PLAYER_DIAMONDS'
