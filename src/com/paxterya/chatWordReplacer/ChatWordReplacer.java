@@ -1,6 +1,5 @@
 package com.paxterya.chatWordReplacer;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +16,6 @@ public class ChatWordReplacer implements Listener {
 
     public ChatWordReplacer(JavaPlugin plugin) {
         this.plugin = plugin;
-        ConfigurationSection c = plugin.getConfig().getConfigurationSection("roles");
         this.replacerMap = (Map<String, Object>) plugin.getConfig().getList("replacer_rules").get(0);
     }
 

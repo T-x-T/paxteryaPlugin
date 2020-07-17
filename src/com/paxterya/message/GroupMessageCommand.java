@@ -1,5 +1,7 @@
 package com.paxterya.message;
 
+import net.md_5.bungee.api.chat.*;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -135,7 +137,17 @@ public class GroupMessageCommand  implements CommandExecutor {
 
   private void createInvite(Player creator, Player invitedPlayer, int gdmID){
     invites.put(invitedPlayer, gdmID);
-    invitedPlayer.sendMessage("§bYou got invited into a group DM from §9§l" + creator.getDisplayName() + "§r Use §l/gdm accept§r or §l/gdm deny§r to accept or deny the invitation");
+
+    invitedPlayer.spigot().sendMessage(new ComponentBuilder("§6You got invited into a group DM from §9§l" + creator.getDisplayName() + "§r! ")
+            .append(new TextComponent("§a§l[Accept] "))
+            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("Accept the invite")}))
+            .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gdm accept"))
+
+            .append(new TextComponent("§c§l[Deny] "))
+            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("Deny the invite")}))
+            .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gdm deny"))
+            .create()
+    );
   }
 
   private void acceptInvite(Player player){
