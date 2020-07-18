@@ -11,8 +11,6 @@ import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
-import com.paxterya.role.RoleUpdater;
-import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import org.bukkit.plugin.java.JavaPlugin;
 
