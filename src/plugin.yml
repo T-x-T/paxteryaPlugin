@@ -1,5 +1,5 @@
 name: paxterya
-version: "0.4.3"
+version: "0.5.0"
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.16"
