@@ -8,6 +8,9 @@ import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
+import com.paxterya.paxteryaPlayer.TablistNameWrapper;
+import com.paxterya.role.PlayerRoleUpdater;
+import com.paxterya.role.Roles;
 import com.paxterya.role.RoleUpdater;
 import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
@@ -16,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PaxteryaPlugin extends JavaPlugin {
 
   private TablistNameWrapper tablistNameWrapper;
+  private Roles allRoles;
 
   public PaxteryaPlugin(){
     this.tablistNameWrapper = new TablistNameWrapper(this);
@@ -25,11 +29,12 @@ public class PaxteryaPlugin extends JavaPlugin {
   @Override
   public void onEnable(){
     this.tablistNameWrapper = new TablistNameWrapper(this);
+    this.allRoles = new Roles(this);
     //Save default config
     this.saveDefaultConfig();
 
     //Initialize the role package
-    RoleUpdater roleUpdater = new RoleUpdater(this);
+    PlayerRoleUpdater roleUpdater = new PlayerRoleUpdater(this);
     this.getServer().getPluginManager().registerEvents(roleUpdater, this);
 
 
@@ -87,6 +92,10 @@ public class PaxteryaPlugin extends JavaPlugin {
 
   public TablistNameWrapper getTablistNameWrapper(){
     return tablistNameWrapper;
+  }
+
+  public Roles getRoles(){
+    return allRoles;
   }
 
 }

@@ -1,11 +1,10 @@
 package com.paxterya.afk;
 
+import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
-import com.paxterya.tablistNameWrapper.TablistNameWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ public class AfkCore {
   Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
   Map<Player, Long> afkTimes; //The time in millis when the player went afk
   List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
-  TablistNameWrapper tablistNameWrapper;
 
   public AfkCore(PaxteryaPlugin plugin){
     this.plugin = plugin;
@@ -26,7 +24,6 @@ public class AfkCore {
     newPlayers = new ArrayList<>();
     afkPositions = new HashMap<>();
     afkTimes = new HashMap<>();
-    tablistNameWrapper = this.plugin.getTablistNameWrapper();
   }
 
   public void setAfkState(Player player, Boolean newState){
@@ -94,10 +91,10 @@ public class AfkCore {
   }
 
   private void setTabList(Player player){
-    tablistNameWrapper.addSuffixIfNoSuffixSet(player, "§8[AFK]");
+    new PaxteryaPlayer(plugin, player).setSuffix("§8[AFK]");
   }
 
   private void resetTabList(Player player){
-    tablistNameWrapper.removeAllSuffixes(player);
+    new PaxteryaPlayer(plugin, player).removeSuffix();
   }
 }
