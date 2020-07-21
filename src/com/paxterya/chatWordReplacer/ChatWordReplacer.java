@@ -6,9 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChatWordReplacer implements Listener {
     private Map<String, Object> replacerMap;
@@ -21,30 +19,42 @@ public class ChatWordReplacer implements Listener {
 
     @EventHandler
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
-        StringBuilder newMessageBuilder = new StringBuilder();
-        //edited is atomic because the stream could in theory be executed in parallel
-        AtomicBoolean edited = new AtomicBoolean(false);
-        Arrays.stream(event.getMessage().split("\\W+")).forEach(word -> {
-            //Process each word in the message. Since there can be multiple keywords in the message, each word has to be checked.
-            if (replacerMap.containsKey(word)) {
-                newMessageBuilder.append(getFormattedReplacement((String) replacerMap.get(word), event.getPlayer()));
-                edited.set(true);
+        //F a s t
+        String newMessage = "";
+        boolean edited = false;
+        int pos = 0, end;
+        String sub;
+        String msg = event.getMessage();
+
+        while ((end = msg.indexOf(' ', pos)) >= 0) {
+            sub = msg.substring(pos, end);
+            if (replacerMap.containsKey(sub)) {
+                newMessage += getFormattedReplacement((String) replacerMap.get(sub), event.getPlayer());
+                edited = true;
             } else {
-                newMessageBuilder.append(word + " ");
+                newMessage += sub + " ";
             }
-        });
-        if (edited.get()) {
-            //if there is something to edit, change the message
-            event.setMessage(newMessageBuilder.toString());
+            pos = end + 1;
+        }
+        sub = msg.substring(pos);
+        if (replacerMap.containsKey(sub)) {
+            newMessage += getFormattedReplacement((String) replacerMap.get(sub), event.getPlayer());
+            edited = true;
+        } else {
+            newMessage += sub + " ";
+        }
+        if (edited) {
+            event.setMessage(newMessage);
         }
     }
 
     private String getFormattedReplacement(String value, Player player) {
         switch (value) {
-            case "PLAYER_COORDS": return PlayerInfo.coordsAsString(player);
-            case "PLAYER_FULLCOORDS": return PlayerInfo.fullCoordsAsString(player);
-            case "PLAYER_TOOL": return PlayerInfo.heldToolAsString(player);
-            case "PLAYER_DIAMONDS": return PlayerInfo.enderChestDiamondsAsString(player);
+            case "PLAYER_COORDS": return PlayerInfo.coordsAsString(player) + " ";
+            case "PLAYER_FULLCOORDS": return  PlayerInfo.fullCoordsAsString(player) + " ";
+            case "PLAYER_TOOL": return PlayerInfo.heldToolAsString(player) + " ";
+            case "PLAYER_DIAMONDS": return PlayerInfo.enderChestDiamondsAsString(player) + " ";
+            case "PLAYER_SPAWN": return PlayerInfo.spawnPointAsString(player) + " ";
             default: return value + " ";
         }
     }
