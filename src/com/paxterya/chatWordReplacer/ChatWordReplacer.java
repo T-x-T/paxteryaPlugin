@@ -27,7 +27,7 @@ public class ChatWordReplacer implements Listener {
         String msg = event.getMessage();
 
         while ((end = msg.indexOf(' ', pos)) >= 0) {
-            sub = msg.substring(pos, end);
+            sub = msg.substring(pos, end).toLowerCase();
             if (replacerMap.containsKey(sub)) {
                 newMessage += getFormattedReplacement((String) replacerMap.get(sub), event.getPlayer());
                 edited = true;
@@ -36,7 +36,7 @@ public class ChatWordReplacer implements Listener {
             }
             pos = end + 1;
         }
-        sub = msg.substring(pos);
+        sub = msg.substring(pos).toLowerCase();
         if (replacerMap.containsKey(sub)) {
             newMessage += getFormattedReplacement((String) replacerMap.get(sub), event.getPlayer());
             edited = true;
