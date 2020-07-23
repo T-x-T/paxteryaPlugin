@@ -37,3 +37,4 @@ replacer_rules:
     myfullcoords: 'PLAYER_FULLCOORDS'
     mytool: 'PLAYER_TOOL'
     mydias: 'PLAYER_DIAMONDS'
+    myspawn: 'PLAYER_SPAWN'
