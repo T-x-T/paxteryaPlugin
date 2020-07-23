@@ -1,9 +1,6 @@
 package com.paxterya.paxteryaplugin;
 
-import com.paxterya.afk.AfkCommandHandler;
-import com.paxterya.afk.AfkCommandTabCompleter;
-import com.paxterya.afk.AfkCore;
-import com.paxterya.afk.AutoAfkManager;
+import com.paxterya.afk.*;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
@@ -70,6 +67,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize afk package
     AfkCore afkCore = new AfkCore(this);
     AutoAfkManager autoAfkManager = new AutoAfkManager(this, afkCore);
+    new AfkPlayerKicker(this, afkCore, this.getConfig().getInt("afkKickTimeMinutes"));
 
     this.getCommand("afk").setExecutor(new AfkCommandHandler(this, afkCore));
     this.getCommand("afk").setTabCompleter(new AfkCommandTabCompleter(this));
