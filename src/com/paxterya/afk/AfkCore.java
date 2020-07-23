@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 public class AfkCore {
-  PaxteryaPlugin plugin;
-  Map<Player, Boolean> afkStates;
-  Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
-  Map<Player, Long> afkTimes; //The time in millis when the player went afk
-  List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
+  private final PaxteryaPlugin plugin;
+  private final Map<Player, Boolean> afkStates;
+  private final Map<Player, Location> afkPositions; //The position of the player at the time when they went afk
+  private final Map<Player, Long> afkTimes; //The time in millis when the player went afk
+  private final List<Player> newPlayers; //Contains new players for that no "is no longer afk" messages should be sent
 
   public AfkCore(PaxteryaPlugin plugin){
     this.plugin = plugin;
@@ -66,6 +66,19 @@ public class AfkCore {
     newPlayers.add(player);
   }
 
+  public List<Player> getAfkPlayers(){
+    List<Player> afkPlayers = new ArrayList<>();
+
+    afkStates.forEach((player, isAfk) -> {
+      if(isAfk) afkPlayers.add(player);
+    });
+
+    return afkPlayers;
+  }
+
+  public long getAfkTimeInMillisOfPlayer(Player player){
+    return afkTimes.get(player);
+  }
 
   private void broadcastAfk(Player player){
     Bukkit.getServer().broadcastMessage(String.format("§8§l%s §r§3is now afk", player.getDisplayName()));
@@ -78,7 +91,13 @@ public class AfkCore {
       return;
     }
     String displayName = player.getDisplayName();
-    double afkTime = (System.currentTimeMillis() - afkTimes.get(player)) / 1000.0 / 60.0; //Minutes
+    double afkTime;
+    if(!afkTimes.containsKey(player)){
+      afkTime = 0;
+    }else{
+      afkTime = (System.currentTimeMillis() - afkTimes.get(player)) / 1000.0 / 60.0; //Minutes
+    }
+
     String afkTimeStr = "";
     if(afkTime >= 60){
       afkTimeStr += String.valueOf(Math.round(afkTime / 60.0)) + "h";
