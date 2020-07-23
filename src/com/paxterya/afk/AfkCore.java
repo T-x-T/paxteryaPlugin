@@ -91,7 +91,13 @@ public class AfkCore {
       return;
     }
     String displayName = player.getDisplayName();
-    double afkTime = (System.currentTimeMillis() - afkTimes.get(player)) / 1000.0 / 60.0; //Minutes
+    double afkTime;
+    if(!afkTimes.containsKey(player)){
+      afkTime = 0;
+    }else{
+      afkTime = (System.currentTimeMillis() - afkTimes.get(player)) / 1000.0 / 60.0; //Minutes
+    }
+
     String afkTimeStr = "";
     if(afkTime >= 60){
       afkTimeStr += String.valueOf(Math.round(afkTime / 60.0)) + "h";

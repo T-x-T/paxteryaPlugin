@@ -39,4 +39,4 @@ replacer_rules:
     mydias: 'PLAYER_DIAMONDS'
     myspawn: 'PLAYER_SPAWN'
 
-afkKickTimeMinutes: 10
+afkKickTimeMinutes: 6000

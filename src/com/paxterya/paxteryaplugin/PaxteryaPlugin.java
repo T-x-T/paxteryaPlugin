@@ -9,24 +9,31 @@ import com.paxterya.paxteryaPlayer.TablistNameWrapper;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.IOException;
 
 public class PaxteryaPlugin extends JavaPlugin {
 
   private TablistNameWrapper tablistNameWrapper;
   private Roles allRoles;
+  private AfkCore afkCore;
+  private AfkPlayerKicker afkPlayerKicker;
 
   public PaxteryaPlugin(){
-    this.tablistNameWrapper = new TablistNameWrapper(this);
+
   }
 
   //Gets called once when plugin gets enabled
   @Override
   public void onEnable(){
+    this.saveDefaultConfig();
+
     this.tablistNameWrapper = new TablistNameWrapper(this);
     this.allRoles = new Roles(this);
-    //Save default config
-    this.saveDefaultConfig();
 
     //Initialize the role package
     PlayerRoleUpdater roleUpdater = new PlayerRoleUpdater(this);
@@ -65,9 +72,9 @@ public class PaxteryaPlugin extends JavaPlugin {
 
 
     //Initialize afk package
-    AfkCore afkCore = new AfkCore(this);
+    afkCore = new AfkCore(this);
     AutoAfkManager autoAfkManager = new AutoAfkManager(this, afkCore);
-    new AfkPlayerKicker(this, afkCore, this.getConfig().getInt("afkKickTimeMinutes"));
+    afkPlayerKicker = new AfkPlayerKicker(this, afkCore, this.getConfig().getInt("afkKickTimeMinutes"));
 
     this.getCommand("afk").setExecutor(new AfkCommandHandler(this, afkCore));
     this.getCommand("afk").setTabCompleter(new AfkCommandTabCompleter(this));
@@ -78,6 +85,10 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize wordReplacer
     ChatWordReplacer chatWordReplacer = new ChatWordReplacer(this);
     this.getServer().getPluginManager().registerEvents(chatWordReplacer, this);
+
+    //Initialize reload
+    PaxteryaCommand reloadCommand = new PaxteryaCommand(this);
+    this.getCommand("paxterya").setExecutor(reloadCommand);
   }
 
   @Override
@@ -92,6 +103,19 @@ public class PaxteryaPlugin extends JavaPlugin {
 
   public Roles getRoles(){
     return allRoles;
+  }
+
+  public void reloadPaxteryaConfig(){
+    afkPlayerKicker.stop();
+    this.reloadConfig();
+    PaxteryaPlugin plugin = this;
+    new BukkitRunnable(){
+      @Override
+      public void run() {
+        afkPlayerKicker = new AfkPlayerKicker(plugin, afkCore, plugin.getConfig().getInt("afkKickTimeMinutes"));
+        allRoles = new Roles(plugin);
+      }
+    }.runTaskLater(this, 20);
   }
 
 }

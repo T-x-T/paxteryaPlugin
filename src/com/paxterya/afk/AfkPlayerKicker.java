@@ -1,16 +1,16 @@
 package com.paxterya.afk;
 
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
 
 public class AfkPlayerKicker {
 
   private final PaxteryaPlugin plugin;
   private final AfkCore afkCore;
+  private BukkitTask timerTask;
 
   private final int kickAfterAfkMinutes;
   private final int checkIntervallInSeconds = 10;
@@ -23,8 +23,12 @@ public class AfkPlayerKicker {
     startTimer();
   }
 
+  public void stop(){
+    timerTask.cancel();
+  }
+
   private void startTimer(){
-    new BukkitRunnable(){
+    timerTask = new BukkitRunnable(){
       @Override
       public void run(){
         kickPlayersAfterTooLongAfk();
