@@ -43,3 +43,5 @@ word_replacer_rules:
     mytool: 'PLAYER_TOOL'
     mydias: 'PLAYER_DIAMONDS'
     myspawn: 'PLAYER_SPAWN'
+
+afkKickTimeMinutes: 6000

@@ -1,10 +1,17 @@
 name: paxterya
+<<<<<<< HEAD
 version: "0.6.1"
+=======
+version: "0.6.0"
+>>>>>>> master
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.16"
 website: https://paxterya.com
 commands:
+  paxterya:
+    description: debug and maintanance commands
+    usage: /<command> reload
   role:
     description: Debug command to get role of a player
     usage: /<command> get <player>
