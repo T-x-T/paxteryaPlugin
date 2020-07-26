@@ -4,6 +4,7 @@ import com.paxterya.afk.AfkCommandHandler;
 import com.paxterya.afk.AfkCommandTabCompleter;
 import com.paxterya.afk.AfkCore;
 import com.paxterya.afk.AutoAfkManager;
+import com.paxterya.chatWordReplacer.WordReplacer;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
@@ -35,9 +36,11 @@ public class PaxteryaPlugin extends JavaPlugin {
     PlayerRoleUpdater roleUpdater = new PlayerRoleUpdater(this);
     this.getServer().getPluginManager().registerEvents(roleUpdater, this);
 
+    //Initialize wordReplacer. Other classes that are dependant on it will have it injected as a param.
+    WordReplacer wordReplacer = new WordReplacer(this);
 
     //Initialize message package
-    MessageCommand messageCommand = new MessageCommand(this);
+    MessageCommand messageCommand = new MessageCommand(this, wordReplacer);
     this.getCommand("msg").setExecutor(messageCommand);
     this.getCommand("dm").setExecutor(messageCommand);
     this.getCommand("w").setExecutor(messageCommand);
@@ -50,7 +53,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("r").setTabCompleter(messageTabCompleter);
 
 
-    GroupMessageCommand groupMessageCommand = new GroupMessageCommand(this);
+    GroupMessageCommand groupMessageCommand = new GroupMessageCommand(this, wordReplacer);
     this.getCommand("groupdm").setExecutor(groupMessageCommand);
     this.getCommand("gdm").setExecutor(groupMessageCommand);
     this.getCommand("greply").setExecutor(groupMessageCommand);
@@ -77,8 +80,8 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getServer().getPluginManager().registerEvents(autoAfkManager, this);
 
 
-    //Initialize wordReplacer
-    ChatWordReplacer chatWordReplacer = new ChatWordReplacer(this);
+    //Initialize chatWordReplacer
+    ChatWordReplacer chatWordReplacer = new ChatWordReplacer(this, wordReplacer);
     this.getServer().getPluginManager().registerEvents(chatWordReplacer, this);
   }
 

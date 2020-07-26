@@ -6,15 +6,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ChatWordReplacer implements Listener {
-    private WordReplacer replacer;
-    public ChatWordReplacer(JavaPlugin plugin) {
-        replacer = new WordReplacer(plugin);
+    private WordReplacer wordReplacer;
+    private boolean shouldReplaceWords;
+    public ChatWordReplacer(JavaPlugin plugin, WordReplacer wordReplacer) {
+        this.wordReplacer = wordReplacer;
+        this.shouldReplaceWords = plugin.getConfig().getBoolean("replace_words_in.global");
     }
 
     @EventHandler
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
-        event.setMessage(
-                replacer.replaceWords(event.getMessage(), event.getPlayer())
-        );
+        if (shouldReplaceWords)
+            event.setMessage( wordReplacer.replaceWords(event.getMessage(), event.getPlayer()) );
     }
 }

@@ -14,7 +14,7 @@ public class WordReplacer {
     public WordReplacer(JavaPlugin plugin) {
         this.regex = Pattern.compile("\\b");
         this.plugin = plugin;
-        this.replacerMap = (Map<String, Object>) plugin.getConfig().getList("replacer_rules").get(0);
+        this.replacerMap = (Map<String, Object>) plugin.getConfig().getList("word_replacer_rules").get(0);
     }
 
     public String replaceWords(String message, Player player) {

@@ -30,7 +30,12 @@ roles:
     permissions:
       - 'minecraft.command.teleport'
 
-replacer_rules:
+#where to use word replacing
+replace_words_in:
+  global: true
+  dm: true
+
+word_replacer_rules:
 #Syntax: <word to replace>: '<replacement>'. Keywords that are replaced with player information are: 'PLAYER_COORDS', 'PLAYER_FULLCOORDS'
   -
     mycoords: 'PLAYER_COORDS'
