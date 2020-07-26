@@ -1,9 +1,5 @@
 name: paxterya
-<<<<<<< HEAD
 version: "0.6.1"
-=======
-version: "0.6.0"
->>>>>>> master
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.16"
