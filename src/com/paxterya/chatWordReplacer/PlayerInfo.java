@@ -29,19 +29,25 @@ public class PlayerInfo {
         if (itemMeta == null) return "§9air§r";
         String name = itemMeta.getDisplayName();
         String type = itemStack.getType().name();
-        StringBuilder enchants = new StringBuilder();
-        if (itemMeta.hasEnchants()) {
-            Iterator<Enchantment> iterator = itemMeta.getEnchants().keySet().iterator();
-            Enchantment next = iterator.next();
-            enchants.append(" [" + next.getName().toLowerCase().replace('_', ' ') + " " + itemMeta.getEnchants().get(next));
-            while (iterator.hasNext()) {
-                next = iterator.next();
-                enchants.append(", " + next.getName().toLowerCase().replace('_', ' ') + " " + itemMeta.getEnchants().get(next));
+
+        if (itemStack.getMaxStackSize() == 1) {
+            StringBuilder enchants = new StringBuilder();
+            if (itemMeta.hasEnchants()) {
+                Iterator<Enchantment> iterator = itemMeta.getEnchants().keySet().iterator();
+                Enchantment next = iterator.next();
+                enchants.append(" [" + next.getName().toLowerCase().replace('_', ' ') + " " + itemMeta.getEnchants().get(next));
+                while (iterator.hasNext()) {
+                    next = iterator.next();
+                    enchants.append(", " + next.getName().toLowerCase().replace('_', ' ') + " " + itemMeta.getEnchants().get(next));
+                }
+                enchants.append("]");
             }
-            enchants.append("]");
+            return "§9" + (name.isEmpty() ? type.toLowerCase().replace('_', ' ') : "§o" + name) +
+                    "§r§d" + enchants.toString() + "§r";
+        } else {
+            return "§9" + (name.isEmpty() ? type.toLowerCase().replace('_', ' ') : "§o" + name) + " §3x " +
+            itemStack.getAmount() + "§r";
         }
-        return "§9" +  (name.isEmpty() ? type.toLowerCase().replace('_', ' '): "§o" + name) +
-                "§r§d" + enchants.toString() + "§r";
 
     }
 

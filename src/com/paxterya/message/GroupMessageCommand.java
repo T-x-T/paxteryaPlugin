@@ -1,7 +1,9 @@
 package com.paxterya.message;
 
+import com.paxterya.chatWordReplacer.WordReplacer;
 import net.md_5.bungee.api.chat.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +20,8 @@ public class GroupMessageCommand  implements CommandExecutor {
 
   JavaPlugin plugin;
 
+  private DmSender dmSender;
+  private WordReplacer wordReplacer;
   //The Integer is the ID of the groupdm and the player is the creator
   Map<Integer, Player> groupDms;
   //Maps which players have been invited to which groupdm, only stores the last invite that hasnt been acted on
@@ -25,53 +29,57 @@ public class GroupMessageCommand  implements CommandExecutor {
   //Maps which groupdm ID a specific player is in right now
   Map<Player, Integer> participants;
 
-  public GroupMessageCommand(JavaPlugin plugin){
+  private boolean shouldReplaceWords;
+  public GroupMessageCommand(JavaPlugin plugin, WordReplacer wordReplacer){
     this.plugin = plugin;
 
-    groupDms = new HashMap<>();
-    invites = new HashMap<>();
-    participants = new HashMap<>();
+    this.dmSender = new DmSender(false, true);
+    this.wordReplacer = wordReplacer;
+
+    this.groupDms = new HashMap<>();
+    this.invites = new HashMap<>();
+    this.participants = new HashMap<>();
+    this.shouldReplaceWords = plugin.getConfig().getBoolean("replace_words_in.dm");
   }
 
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
+  public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args){
 
     //Check if arguments are supplied
     if(args.length < 1){
       return false;
     }
+    Player sender = Bukkit.getPlayer(commandSender.getName());
 
     //Check if its the send message command
     if(label.equalsIgnoreCase("gmsg") || label.equalsIgnoreCase("greply") || label.equalsIgnoreCase("gr") || label.equalsIgnoreCase("gm")){
-      StringBuilder message = new StringBuilder();
-      for (String arg : args) {
-        message.append(arg);
-        message.append(" ");
-      }
-      sendGroupDM(Bukkit.getPlayer(sender.getName()), message.toString());
+      //create the message by joining the arguments
+      String message = StringUtils.join(args," ");
+      if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
+      sendGroupDM(sender, message);
       return true;
     }
 
     //Sub-command accept
     if(args[0].equalsIgnoreCase("accept")){
-      acceptInvite(Bukkit.getPlayer(sender.getName()));
+      acceptInvite(sender);
       return true;
     }
 
     //Sub-command deny
     if(args[0].equalsIgnoreCase("deny")){
-      denyInvite(Bukkit.getPlayer(sender.getName()));
+      denyInvite(sender);
       return true;
     }
 
     //Sub-command leave
     if(args[0].equalsIgnoreCase("leave")){
-      leaveGroupDm(Bukkit.getPlayer(sender.getName()));
+      leaveGroupDm(sender);
       return true;
     }
 
     //Sub-command list
     if(args[0].equalsIgnoreCase("list")){
-      listParticipants(Bukkit.getPlayer(sender.getName()));
+      listParticipants(sender);
       return true;
     }
 
@@ -214,7 +222,6 @@ public class GroupMessageCommand  implements CommandExecutor {
     });
     Player[] recipients = recipientList.toArray(new Player[0]);
 
-    DmSender dmSender = new DmSender(false, true);
     for(Player recipient : recipients){
       if(recipient != null) dmSender.sendMsg(sender, recipient, msg);
     }
