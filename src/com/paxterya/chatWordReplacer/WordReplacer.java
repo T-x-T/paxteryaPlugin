@@ -42,6 +42,7 @@ public class WordReplacer {
             case "PLAYER_TOOL": return PlayerInfo.heldToolAsString(player);
             case "PLAYER_DIAMONDS": return PlayerInfo.enderChestDiamondsAsString(player);
             case "PLAYER_SPAWN": return PlayerInfo.spawnPointAsString(player);
+            case "PLAYER_PLAYTIME": return PlayerInfo.playTimeAsString(player);
             default: return value;
         }
     }

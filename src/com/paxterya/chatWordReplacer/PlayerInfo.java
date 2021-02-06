@@ -2,6 +2,7 @@ package com.paxterya.chatWordReplacer;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Iterator;
 
+/**
+ * This class contains static methods to generate information
+ * about Players as pretty game-ready strings.
+ */
 public class PlayerInfo {
     public static String coordsAsString(Player player) {
         return  "§6"+(int) player.getLocation().getX()+" "+
@@ -71,5 +76,13 @@ public class PlayerInfo {
             spawn = player.getWorld().getSpawnLocation();
         }
         return "§6§o" +  (int) spawn.getX() + " " + (int) spawn.getZ() + "§r";
+    }
+
+    public static String playTimeAsString(Player player) {
+        int ticksPlayed = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+        int minutesPlayed = ticksPlayed / 20 / 60;
+        int hoursPlayed = minutesPlayed / 60;
+        if (hoursPlayed < 1) return "§9" + minutesPlayed + " minutes§r";
+        return "§9" + hoursPlayed + " hours§r";
     }
 }
