@@ -3,6 +3,7 @@ package com.paxterya.chatWordReplacer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,26 @@ public class PlayerInfo {
                 (int) player.getLocation().getY()+" "+
                 (int) player.getLocation().getZ()+" "+
                 player.getWorld().getName()+"§r";
+    }
+
+    public static String coolCoordsAsString(Player player) {
+        World world = player.getWorld();
+        String color;
+        switch(world.getName()) {
+            case "world": color = "§a"; break;
+            case "world_nether": color = "§c"; break;
+            case "world_the_end": color = "§d"; break;
+            default: color = "";
+        }
+        return  color + (int) player.getLocation().getX()+" "+
+                (int) player.getLocation().getZ()+"§r";
+    }
+
+    public static String biomeAsString(Player player) {
+        World world = player.getWorld();
+        Location location = player.getLocation();
+        String biomeName = world.getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()).name();
+        return "§2§l" + biomeName.toLowerCase().replace('_', ' ') + "§r";
     }
 
     public static String heldToolAsString(Player player) {
