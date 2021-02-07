@@ -42,11 +42,12 @@ word_replacer_rules:
 #'PLAYER_SPAWN', 'PLAYER_PLAYTIME',
   -
     mycoords: 'PLAYER_COOLCOORDS'
-    myfullcoords: 'PLAYER_FULLCOORDS'
+    #myfullcoords: 'PLAYER_FULLCOORDS'
     mytool: 'PLAYER_TOOL'
     mydias: 'PLAYER_DIAMONDS'
     myspawn: 'PLAYER_SPAWN'
     myplaytime: 'PLAYER_PLAYTIME'
     mybiome: 'PLAYER_BIOME'
+    myspeed: 'PLAYER_SPEED'
 
 afkKickTimeMinutes: 6000

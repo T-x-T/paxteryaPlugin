@@ -30,15 +30,8 @@ public class PlayerInfo {
     }
 
     public static String coolCoordsAsString(Player player) {
-        World world = player.getWorld();
-        String color;
-        switch(world.getName()) {
-            case "world": color = "§a"; break;
-            case "world_nether": color = "§c"; break;
-            case "world_the_end": color = "§d"; break;
-            default: color = "";
-        }
-        return  color + (int) player.getLocation().getX()+" "+
+        String color = getDimensionColor(player);
+        return  color + "§o" + (int) player.getLocation().getX()+" "+
                 (int) player.getLocation().getZ()+"§r";
     }
 
@@ -46,7 +39,16 @@ public class PlayerInfo {
         World world = player.getWorld();
         Location location = player.getLocation();
         String biomeName = world.getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ()).name();
-        return "§2§l" + biomeName.toLowerCase().replace('_', ' ') + "§r";
+        return getDimensionColor(player) + "§l" + biomeName.toLowerCase().replace('_', ' ') + "§r";
+    }
+
+    private static String getDimensionColor(Player player) {
+        switch(player.getWorld().getName()) {
+            case "world": return "§a";
+            case "world_nether":return player.getLocation().getY() < 128 ? "§c" : "§7";
+            case "world_the_end": return "§d";
+            default: return "";
+        }
     }
 
     public static String heldToolAsString(Player player) {
@@ -105,5 +107,9 @@ public class PlayerInfo {
         int hoursPlayed = minutesPlayed / 60;
         if (hoursPlayed < 1) return "§9" + minutesPlayed + " minutes§r";
         return "§9" + hoursPlayed + " hours§r";
+    }
+
+    public static String speedAsString(Player player) {
+        return "§e" + (int) (player.getVelocity().length() * 20) + " §obps§r";
     }
 }
