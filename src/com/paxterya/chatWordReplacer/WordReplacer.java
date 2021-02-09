@@ -44,6 +44,7 @@ public class WordReplacer {
             case "PLAYER_PLAYTIME": return PlayerInfo.playTimeAsString(player);
             case "PLAYER_BIOME": return PlayerInfo.biomeAsString(player);
             case "PLAYER_SPEED": return PlayerInfo.speedAsString(player);
+            case "PLAYER_XP": return PlayerInfo.xpAsString(player);
             default: return value;
         }
     }

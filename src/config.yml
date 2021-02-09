@@ -39,7 +39,7 @@ word_replacer_rules:
 #Syntax: <word to replace>: '<replacement>'.
 #Keywords that are replaced with special player information are:
 #'PLAYER_COORDS', 'PLAYER_FULLCOORDS', 'PLAYER_COOLCOORDS', 'PLAYER_BIOME', 'PLAYER_TOOL', 'PLAYER_DIAMONDS',
-#'PLAYER_SPAWN', 'PLAYER_PLAYTIME',
+#'PLAYER_SPAWN', 'PLAYER_PLAYTIME', 'PLAYER_SPEED', 'PLAYER_XP'
   -
     mycoords: 'PLAYER_COOLCOORDS'
     #myfullcoords: 'PLAYER_FULLCOORDS'
@@ -49,5 +49,6 @@ word_replacer_rules:
     myplaytime: 'PLAYER_PLAYTIME'
     mybiome: 'PLAYER_BIOME'
     myspeed: 'PLAYER_SPEED'
+    myxp: 'PLAYER_XP'
 
 afkKickTimeMinutes: 6000

@@ -112,4 +112,8 @@ public class PlayerInfo {
     public static String speedAsString(Player player) {
         return "§e" + (int) (player.getVelocity().length() * 20) + " §obps§r";
     }
+
+    public static String xpAsString(Player player) {
+        return "§elvl " + player.getLevel() + "§r";
+    }
 }
