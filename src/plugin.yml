@@ -29,3 +29,6 @@ commands:
   afk:
     description: Manually toggle afk state
     usage: /<command> to go afk and /<command> again to go un-afk
+  getafkplayers:
+    description: Lists all afk players
+    usage: /<command>
