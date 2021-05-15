@@ -69,7 +69,6 @@ public class AutoAfkManager implements Listener {
   }
 
   private void resetLastActionTime(Player player){
-    if(player.getGameMode() != GameMode.SURVIVAL) return;
     this.lastActionTimes.replace(player, System.currentTimeMillis());
     if(afkCore.getAfkState(player)) afkCore.setAfkState(player, false);
   }
@@ -91,7 +90,6 @@ public class AutoAfkManager implements Listener {
   }
 
   private void updateAfk(Player player){
-    if(player.getGameMode() != GameMode.SURVIVAL) return;
     if(!afkCore.getAfkState(player) && getLastActionTime(player) + afkTime <= System.currentTimeMillis()){
       afkCore.setAfkState(player, true);
     }
