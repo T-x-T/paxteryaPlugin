@@ -1,6 +1,7 @@
 package com.paxterya.paxteryaplugin;
 
 import com.paxterya.afk.*;
+import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import com.paxterya.chatWordReplacer.WordReplacer;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
@@ -9,11 +10,8 @@ import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
-import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.io.IOException;
 
 public class PaxteryaPlugin extends JavaPlugin {
 

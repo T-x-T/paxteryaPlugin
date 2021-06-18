@@ -1,6 +1,7 @@
 package com.paxterya.paxteryaPlayer;
 
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
+
 import com.sun.istack.NotNull;
 import org.bukkit.entity.Player;
 

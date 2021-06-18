@@ -2,21 +2,13 @@ plugins {
     id 'java'
 }
 
-group 'com.paxterya'
+group 'java.paxterya'
 version '0.8.0'
 
 repositories {
     mavenCentral()
     maven {
         url 'https://papermc.io/repo/repository/maven-public/'
-    }
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
     }
 }
 

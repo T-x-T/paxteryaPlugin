@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PaxteryaCommand implements CommandExecutor {
