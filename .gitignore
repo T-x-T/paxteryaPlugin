@@ -29,3 +29,4 @@ paxteryaPlugin.iml
 
 #gradle
 .gradle/
+build/
