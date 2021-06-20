@@ -7,6 +7,8 @@ import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
+import com.paxterya.paxteryaPlayer.OnJoinHandler;
+import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
@@ -85,6 +87,10 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize chatWordReplacer
     ChatWordReplacer chatWordReplacer = new ChatWordReplacer(this, wordReplacer);
     this.getServer().getPluginManager().registerEvents(chatWordReplacer, this);
+
+    //Initialize paxteryaPlayerOnJoinHandler
+    OnJoinHandler onJoinHandler = new OnJoinHandler(this);
+    this.getServer().getPluginManager().registerEvents(onJoinHandler, this);
 
     //Initialize reload
     PaxteryaCommand reloadCommand = new PaxteryaCommand(this);
