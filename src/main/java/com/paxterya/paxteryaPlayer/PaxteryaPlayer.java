@@ -4,7 +4,6 @@ import com.paxterya.paxteryaplugin.PaxteryaPlugin;
 
 import com.sun.istack.NotNull;
 import org.bukkit.entity.Player;
-
 public class PaxteryaPlayer {
 
   PaxteryaPlugin plugin;
