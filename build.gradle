@@ -5,6 +5,9 @@ plugins {
 group 'java.paxterya'
 version '0.8.0'
 
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
 repositories {
     mavenCentral()
     maven {
