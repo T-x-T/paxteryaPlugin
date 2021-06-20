@@ -30,3 +30,8 @@ paxteryaPlugin.iml
 #gradle
 .gradle/
 build/
+!gradle/wrapper/gradle-wrapper.jar
+.project
+
+#vscode
+.vscode
