@@ -26,3 +26,7 @@ hs_err_pid*
 .idea/
 out
 paxteryaPlugin.iml
+
+#gradle
+.gradle/
+build/

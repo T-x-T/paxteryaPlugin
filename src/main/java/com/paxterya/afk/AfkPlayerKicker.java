@@ -1,6 +1,7 @@
 package com.paxterya.afk;
 
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;

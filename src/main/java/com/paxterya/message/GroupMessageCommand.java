@@ -1,6 +1,7 @@
 package com.paxterya.message;
 
 import com.paxterya.chatWordReplacer.WordReplacer;
+
 import net.md_5.bungee.api.chat.*;
 
 import org.apache.commons.lang.StringUtils;

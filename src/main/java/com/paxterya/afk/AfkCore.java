@@ -1,7 +1,8 @@
 package com.paxterya.afk;
 
-import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaplugin.PaxteryaPlugin;
+import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
