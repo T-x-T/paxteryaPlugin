@@ -28,9 +28,14 @@ public class DefaultSuffixFromServerFetcher {
         res.append(inputLine);
       }
       br.close();
+
+      if(res.toString().equals("{\"suffix\":null}")) {
+        return null;
+      }
+
       return res.toString().replace("{\"suffix\":\"", "").replace("\"}", "");
     }catch (IOException | NullPointerException ignored){
-      return "";
+      return null;
     }
   }
 
