@@ -15,7 +15,6 @@ public class OnJoinHandler implements Listener {
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    System.out.println("player joined");
     plugin.getTablistNameWrapper().updateDefaultSuffix(event.getPlayer());
   }
 }
