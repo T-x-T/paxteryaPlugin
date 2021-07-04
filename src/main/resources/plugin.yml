@@ -2,7 +2,7 @@ name: paxterya
 version: "0.8.2"
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
-api-version: "1.16"
+api-version: "1.17"
 website: https://paxterya.com
 commands:
   paxterya:
