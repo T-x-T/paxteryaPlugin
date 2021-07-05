@@ -1,3 +1,5 @@
+package com.paxterya.util;
+
 public class PolygonBuilder {
     
     private Polygon polygon = new Polygon();
@@ -13,7 +15,7 @@ public class PolygonBuilder {
     }
 
     public Polygon build() {
-        polygon.addCorner(polygon.corners.get(0));
+        polygon.addCorner(polygon.getCorners().get(0));
         return polygon;
     }
 }
