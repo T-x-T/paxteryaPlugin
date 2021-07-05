@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Polygon {
 
+    protected Polygon() {}
+
     private List<Point2D> corners = new ArrayList<>();
 
     void addCorner(Point2D p) {
