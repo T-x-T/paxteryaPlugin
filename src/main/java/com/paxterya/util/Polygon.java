@@ -3,7 +3,7 @@ package com.paxterya.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Polygon {
+public class Polygon extends Shape {
 
     protected Polygon() {}
 
@@ -17,6 +17,7 @@ public class Polygon {
         return corners;
     }
 
+    @Override
     public boolean contains(Point2D p) {
         return wn_PnPoly(p) != 0;
     }

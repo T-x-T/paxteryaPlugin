@@ -10,6 +10,8 @@ import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.paxteryaPlayer.OnJoinHandler;
 import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
+import com.paxterya.region.RegionChangeListener;
+import com.paxterya.region.RegionManager;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -95,6 +97,11 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize reload
     PaxteryaCommand reloadCommand = new PaxteryaCommand(this);
     this.getCommand("paxterya").setExecutor(reloadCommand);
+
+
+    //Regions
+    RegionManager regionManager = new RegionManager(this);
+    this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
   }
 
   @Override
