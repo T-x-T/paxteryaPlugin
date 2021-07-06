@@ -3,7 +3,6 @@ package com.paxterya.region;
 import com.paxterya.util.Shape;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 
 /**
@@ -15,15 +14,14 @@ public class Region {
 
     private String name;
 
-    /**
-     * The color associated with the region to be used in chat messages for example
-     */
-    private TextColor color;
+    private String dimension;
+
+    private String color;
 
     private Shape area;
 
     public boolean contains(Location location) {
-        return area.contains(location);
+        return location.getWorld().getName().equals(dimension) && area.contains(location);
     }
 
     public boolean equals(Region region) {

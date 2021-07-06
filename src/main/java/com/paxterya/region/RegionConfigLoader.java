@@ -44,12 +44,17 @@ public class RegionConfigLoader {
             return null;
         }
 
-        String hexColor = config.getString(key + ".color");
-        if (hexColor == null) {
-            Bukkit.getLogger().severe("Color for '" + key + "' not found");
-            return null;
+        String dimension = config.getString(key + ".dimension");
+        if (dimension == null) {
+            Bukkit.getLogger().info("Dimension for '" + key + "' not found, defaults to 'world'");
+            dimension = "world";
         }
-        TextColor color = TextColor.fromCSSHexString(hexColor);
+
+        String color = config.getString(key + ".color");
+        if (color == null) {
+            Bukkit.getLogger().info("Color for '" + key + "' not found, defaults to '#ffffff'");
+            color = "#ffffff";
+        }
 
         String type = config.getString(key + ".type");
         if (type == null) {
@@ -96,7 +101,7 @@ public class RegionConfigLoader {
             return null;
         }
 
-        return new Region(name, color, shape);
+        return new Region(name, dimension, color, shape);
     }
 
 

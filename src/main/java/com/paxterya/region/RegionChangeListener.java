@@ -1,6 +1,7 @@
 package com.paxterya.region;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,14 +17,14 @@ public class RegionChangeListener implements Listener {
                     .append(Component.text("Leaving ").decorate(TextDecoration.ITALIC))
                     .append(Component.text()
                             .content(event.getPreviousRegion().getName())
-                            .color(event.getPreviousRegion().getColor())
+                            .color(TextColor.fromCSSHexString(event.getPreviousRegion().getColor()))
                             .decorate(TextDecoration.ITALIC)));
         } else {
             player.sendMessage(Component.text()
                     .append(Component.text("Entering ").decorate(TextDecoration.ITALIC))
                     .append(Component.text()
                             .content(event.getNewRegion().getName())
-                            .color(event.getNewRegion().getColor())
+                            .color(TextColor.fromCSSHexString(event.getNewRegion().getColor()))
                             .decorate(TextDecoration.ITALIC)));
         }
     }
