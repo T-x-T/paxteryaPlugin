@@ -1,5 +1,6 @@
 example:
   name: "Example"
+  dimension: 0 # 0 for ow, 1 for nether, 2 for the end
   color: "#ff0000"
   type: "polygon"
   corners: # corners must be ordered CLOCK-WISE

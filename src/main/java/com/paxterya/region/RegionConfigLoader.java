@@ -1,12 +1,11 @@
 package com.paxterya.region;
 
+import com.paxterya.util.Circle;
+import com.paxterya.util.Point2D;
 import com.paxterya.util.PolygonBuilder;
-import lombok.AllArgsConstructor;
+import com.paxterya.util.Shape;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,39 +17,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
 public class RegionConfigLoader {
 
-    private Plugin plugin;
 
-    public List<Region> loadRegions() {
+    public static List<Region> loadRegions(Plugin plugin) {
 
-        FileConfiguration config = loadConfigFile();
-
+        FileConfiguration config = loadConfigFile(plugin);
         List<Region> regions = new ArrayList<>();
 
         config.getKeys(false).forEach(key -> {
-            Bukkit.getLogger().info("loading region '" + key + "'");
-            String name = config.getString(key + ".name");
-            if (name == null) Bukkit.getLogger().severe("Name for '" + key + "' not found");
+            Region region = loadRegion(config, key);
+            if (region != null)
+                regions.add(region);
+        });
 
-            String hexColor = config.getString(key + ".color");
-            if (hexColor == null) {
-                Bukkit.getLogger().severe("Color for '" + key + "' not found");
-                return;
-            }
-            TextColor color = TextColor.fromCSSHexString(hexColor);
+        return regions;
+    }
 
+
+    private static Region loadRegion(FileConfiguration config, String key) {
+        Bukkit.getLogger().info("loading region '" + key + "'");
+
+        String name = config.getString(key + ".name");
+        if (name == null) {
+            Bukkit.getLogger().severe("Name for '" + key + "' not found");
+            return null;
+        }
+
+        String hexColor = config.getString(key + ".color");
+        if (hexColor == null) {
+            Bukkit.getLogger().severe("Color for '" + key + "' not found");
+            return null;
+        }
+        TextColor color = TextColor.fromCSSHexString(hexColor);
+
+        String type = config.getString(key + ".type");
+        if (type == null) {
+            Bukkit.getLogger().severe("Type for '" + key + "' not found");
+            return null;
+        }
+        Shape shape;
+
+        if (type.equals("polygon")) {
             List<Map<?, ?>> p = config.getMapList(key + ".corners");
             if (p.isEmpty()) {
                 Bukkit.getLogger().severe("Corner points for '" + key + "' not found");
-                return;
+                return null;
             }
 
             PolygonBuilder pb = new PolygonBuilder();
             for (Map<?, ?> point : p) {
                 Integer x = (Integer) point.get("x");
-                Integer z =-(Integer) point.get("z");
+                Integer z = -(Integer) point.get("z");
                 if (x == null || z == null) {
                     Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
                     continue;
@@ -58,13 +76,31 @@ public class RegionConfigLoader {
                 pb.addCorner(x, z);
             }
 
-            regions.add(new Region(name, color, pb.build()));
-        });
+            shape = pb.build();
 
-        return regions;
+        } else if (type.equals("circle")) {
+            double centerX = config.getDouble(key + ".center.x", 1e-9);
+            double centerY = config.getDouble(key + ".center.y", 1e-9);
+            if (centerX == 1e-9 || centerY == 1e-9) {
+                Bukkit.getLogger().severe("Center point for '" + key + "' is invalid");
+                return null;
+            }
+            double radius = config.getDouble(key + ".radius", 1e-9);
+            if (radius == 1e-9) {
+                Bukkit.getLogger().severe("Radius for '" + key + "' is invalid");
+                return null;
+            }
+            shape = new Circle(radius, new Point2D(centerX, centerY));
+        } else {
+            Bukkit.getLogger().severe("Unknown type '"+ type +"' for '" + key + "'");
+            return null;
+        }
+
+        return new Region(name, color, shape);
     }
 
-    private FileConfiguration loadConfigFile() {
+
+    private static FileConfiguration loadConfigFile(Plugin plugin) {
         File customConfigFile = new File(plugin.getDataFolder(), "regions.yml");
         if (!customConfigFile.exists()) {
             customConfigFile.getParentFile().mkdirs();

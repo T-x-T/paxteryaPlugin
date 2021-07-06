@@ -13,15 +13,12 @@ import java.util.UUID;
 @Data
 public class RegionManager {
 
-    private RegionConfigLoader configLoader;
-
     Map<UUID, Region> playerRegion = new HashMap<>();
 
     private List<Region> regions;
 
     public RegionManager(Plugin plugin) {
-        configLoader = new RegionConfigLoader(plugin);
-        regions = configLoader.loadRegions();
+        regions = RegionConfigLoader.loadRegions(plugin);
         startTask(plugin);
     }
 
