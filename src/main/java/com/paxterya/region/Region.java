@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Location;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +24,8 @@ public class Region {
     private RegionType type;
 
     private Shape area;
+
+    private List<Region> subRegions;
 
     private Map<String, String> meta;
 

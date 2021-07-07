@@ -33,7 +33,9 @@ public class RegionManager {
 
     private Region getRegion(Location location) {
         for (Region region : regions) {
-            if (region.contains(location)) return region;
+            if (region.contains(location)) {
+                return region.getSubRegions().stream().filter(sub -> sub.contains(location)).findAny().orElse(region);
+            }
         }
         return null;
     }

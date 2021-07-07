@@ -16,7 +16,7 @@ import java.util.*;
 
 public class RegionConfigLoader {
 
-    public static String[] optionals = new String[] {"color", "fillcolor", "weight", "opacity", "fillopacity"};
+    public static String[] optionals = new String[] {"color", "fillcolor", "weight", "opacity", "fillopacity", "subregionof"};
 
     public static List<Region> loadRegions(Plugin plugin) {
         Bukkit.getLogger().info("[paxterya] Loading regions from config");
@@ -28,6 +28,17 @@ public class RegionConfigLoader {
             if (region != null)
                 regions.add(region);
         });
+
+        // process subregions: if is a subregion, find the containing and add to its subregions
+        regions.forEach(region -> {
+            String containingRegion = region.getMeta().get("subregionof");
+            if (containingRegion != null) {
+                regions.stream().filter(containing -> containing.getId().equals(containingRegion)).forEach(containing -> containing.getSubRegions().add(region));
+            }
+        });
+        // remove subregions from regions list
+        regions.removeIf(region -> region.getMeta().get("subregionof") != null);
+
         Bukkit.getLogger().info("[paxterya] Region loading complete");
         return regions;
     }
@@ -103,7 +114,7 @@ public class RegionConfigLoader {
                 meta.put(fieldKey, value);
         }
 
-        return new Region(key, name, dimension, type, shape, meta);
+        return new Region(key, name, dimension, type, shape, new ArrayList<>(), meta);
     }
 
 

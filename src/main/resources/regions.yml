@@ -43,3 +43,13 @@ circleExample: # unique key
     x: 123
     y: 234
   radius: 32
+
+subRegionExample:
+  name: "Example subregion"
+  subregionof: "example" # refers to the region with key "example"
+  color: "00ff00"
+  type: "circle"
+  center:
+    x: 3
+    y: 3
+  radius: 3
