@@ -4,6 +4,7 @@ import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,28 @@ public class RegionManager {
 
     private List<Region> regions;
 
+    private BukkitTask updateTask;
+
     public RegionManager(Plugin plugin) {
         regions = RegionConfigLoader.loadRegions(plugin);
-        startTask(plugin);
+        updateTask = Bukkit.getScheduler().runTaskTimer(plugin, getUpdatetask(), 69, 20);
     }
 
-    private void startTask(Plugin plugin) {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+    public void reload(Plugin plugin) {
+        Bukkit.getScheduler().cancelTask(updateTask.getTaskId());
+        regions = RegionConfigLoader.loadRegions(plugin);
+        updateTask = Bukkit.getScheduler().runTaskTimer(plugin, getUpdatetask(), 69, 20);
+    }
+
+    private Region getRegion(Location location) {
+        for (Region region : regions) {
+            if (region.contains(location)) return region;
+        }
+        return null;
+    }
+
+    private Runnable getUpdatetask() {
+        return () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             Region newRegion = getRegion(player.getLocation());
 
             Region previousRegion = playerRegion.put(player.getUniqueId(), newRegion);
@@ -34,13 +50,6 @@ public class RegionManager {
             } else if (!newRegion.equals(previousRegion)) {
                 Bukkit.getPluginManager().callEvent(new RegionChangeEvent(player, previousRegion, newRegion));
             }
-        }), 69, 20);
-    }
-
-    private Region getRegion(Location location) {
-        for (Region region : regions) {
-            if (region.contains(location)) return region;
-        }
-        return null;
+        });
     }
 }

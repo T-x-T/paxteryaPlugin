@@ -7,7 +7,9 @@
 #
 # - Each region must have all the required fields: name, type and corners or center and radius.
 #   If some required field is missing, the region won't be loaded. (error message will be logged)
-#   Fields dimension and color are optional with defaults 'world' and '#ffffff' respectively.
+#   Fields dimension and color are optional with defaults 'world' and 'ffffff' respectively.
+#
+# - In addition, all the dynmap area params are supported (but not required): fillcolor, opacity, fillopacity, weight
 #
 # - When defining corners for a polygonal region, it is important that the corner points are ordered clock-wise.
 #
@@ -19,7 +21,7 @@
 example: # unique key
   name: "Example triangle region"
   dimension: "world" # overworld. Check the world names of your server in the server folder.
-  color: "#ff0000"
+  color: "ff0000"
   type: "polygon" # either 'polygon' or 'circle'
   corners: # polygon corners must be ordered CLOCK-WISE
     - {x: 0, z: 0}
@@ -29,7 +31,7 @@ example: # unique key
 circleExample: # unique key
   name: "Example circle"
   dimension: "world_nether"
-  color: "#00ff00"
+  color: "00ff00"
   type: "circle"
   center:
     x: 123

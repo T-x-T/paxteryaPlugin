@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Location;
 
+import java.util.Map;
+
 /**
  * Region is a generic area in the world defined by a 2d-shape with a name and a color
  */
@@ -18,11 +20,11 @@ public class Region {
 
     private String dimension;
 
-    private String color;
-
     private RegionType type;
 
     private Shape area;
+
+    private Map<String, String> meta;
 
     public boolean contains(Location location) {
         return location.getWorld().getName().equals(dimension) && area.contains(location);
@@ -33,4 +35,10 @@ public class Region {
     }
 
     public int hashCode() { return id.hashCode(); }
+
+    public String getOrDefault(String key, String def) {
+        String value = meta.get(key);
+        if (value == null) return def;
+        return value;
+    }
 }

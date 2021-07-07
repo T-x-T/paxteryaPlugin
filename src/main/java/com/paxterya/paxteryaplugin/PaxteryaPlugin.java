@@ -24,6 +24,7 @@ public class PaxteryaPlugin extends JavaPlugin {
   private Roles allRoles;
   private AfkCore afkCore;
   private AfkPlayerKicker afkPlayerKicker;
+  private RegionManager regionManager;
 
   public PaxteryaPlugin(){
 
@@ -101,9 +102,9 @@ public class PaxteryaPlugin extends JavaPlugin {
 
 
     //Regions
-    RegionManager regionManager = new RegionManager(this);
+    regionManager = new RegionManager(this);
     this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
-    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 169);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 1);
   }
 
   @Override
@@ -131,6 +132,8 @@ public class PaxteryaPlugin extends JavaPlugin {
         allRoles = new Roles(plugin);
       }
     }.runTaskLater(this, 20);
+    regionManager.reload(this);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 1);
   }
 
 }

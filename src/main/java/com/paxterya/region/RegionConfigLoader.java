@@ -4,7 +4,6 @@ import com.paxterya.util.Circle;
 import com.paxterya.util.Point2D;
 import com.paxterya.util.PolygonBuilder;
 import com.paxterya.util.Shape;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,11 +13,13 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RegionConfigLoader {
 
+    public static String[] optionals = new String[] {"color", "fillcolor", "weight", "opacity", "fillopacity"};
 
     public static List<Region> loadRegions(Plugin plugin) {
         Bukkit.getLogger().info("[paxterya] Loading regions from config");
@@ -36,7 +37,7 @@ public class RegionConfigLoader {
 
 
     private static Region loadRegion(FileConfiguration config, String key) {
-
+        // required fields
         String name = config.getString(key + ".name");
         if (name == null) {
             Bukkit.getLogger().severe("Name for '" + key + "' not found");
@@ -47,12 +48,6 @@ public class RegionConfigLoader {
         if (dimension == null) {
             Bukkit.getLogger().info("Dimension for '" + key + "' not found, defaults to 'world'");
             dimension = "world";
-        }
-
-        String color = config.getString(key + ".color");
-        if (color == null) {
-            Bukkit.getLogger().info("Color for '" + key + "' not found, defaults to '#ffffff'");
-            color = "#ffffff";
         }
 
         RegionType type;
@@ -68,15 +63,14 @@ public class RegionConfigLoader {
             Bukkit.getLogger().severe("Unknown type '"+ typeString +"' for '" + key + "'");
             return null;
         }
-        Shape shape;
 
+        Shape shape;
         if (type == RegionType.POLYGON) {
             List<Map<?, ?>> p = config.getMapList(key + ".corners");
             if (p.isEmpty()) {
                 Bukkit.getLogger().severe("Corner points for '" + key + "' not found");
                 return null;
             }
-
             PolygonBuilder pb = new PolygonBuilder();
             for (Map<?, ?> point : p) {
                 Integer x = (Integer) point.get("x");
@@ -87,7 +81,6 @@ public class RegionConfigLoader {
                 }
                 pb.addCorner(x, z);
             }
-
             shape = pb.build();
 
         } else { // type == Type.Circle
@@ -105,7 +98,15 @@ public class RegionConfigLoader {
             shape = new Circle(radius, new Point2D(centerX, centerY));
         }
 
-        return new Region(key, name, dimension, color, type, shape);
+        // optional fields
+        Map<String, String> meta = new HashMap<>();
+        for (String fieldKey : optionals) {
+            String value = config.getString(key + "." + fieldKey);
+            if (value != null)
+                meta.put(fieldKey, value);
+        }
+
+        return new Region(key, name, dimension, type, shape, meta);
     }
 
 
