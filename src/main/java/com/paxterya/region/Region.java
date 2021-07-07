@@ -37,8 +37,6 @@ public class Region {
     public int hashCode() { return id.hashCode(); }
 
     public String getOrDefault(String key, String def) {
-        String value = meta.get(key);
-        if (value == null) return def;
-        return value;
+        return meta.getOrDefault(key, def);
     }
 }
