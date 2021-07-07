@@ -21,7 +21,7 @@ public class RegionConfigLoader {
 
 
     public static List<Region> loadRegions(Plugin plugin) {
-
+        Bukkit.getLogger().info("[paxterya] Loading regions from config");
         FileConfiguration config = loadConfigFile(plugin);
         List<Region> regions = new ArrayList<>();
 
@@ -30,13 +30,12 @@ public class RegionConfigLoader {
             if (region != null)
                 regions.add(region);
         });
-
+        Bukkit.getLogger().info("[paxterya] Region loading complete");
         return regions;
     }
 
 
     private static Region loadRegion(FileConfiguration config, String key) {
-        Bukkit.getLogger().info("loading region '" + key + "'");
 
         String name = config.getString(key + ".name");
         if (name == null) {
@@ -56,14 +55,22 @@ public class RegionConfigLoader {
             color = "#ffffff";
         }
 
-        String type = config.getString(key + ".type");
-        if (type == null) {
+        RegionType type;
+        String typeString = config.getString(key + ".type");
+        if (typeString == null) {
             Bukkit.getLogger().severe("Type for '" + key + "' not found");
+            return null;
+        } else if (typeString.equals("polygon")) {
+            type = RegionType.POLYGON;
+        } else if (typeString.equals("circle")) {
+            type = RegionType.CIRCLE;
+        } else {
+            Bukkit.getLogger().severe("Unknown type '"+ typeString +"' for '" + key + "'");
             return null;
         }
         Shape shape;
 
-        if (type.equals("polygon")) {
+        if (type == RegionType.POLYGON) {
             List<Map<?, ?>> p = config.getMapList(key + ".corners");
             if (p.isEmpty()) {
                 Bukkit.getLogger().severe("Corner points for '" + key + "' not found");
@@ -83,7 +90,7 @@ public class RegionConfigLoader {
 
             shape = pb.build();
 
-        } else if (type.equals("circle")) {
+        } else { // type == Type.Circle
             double centerX = config.getDouble(key + ".center.x", 1e-9);
             double centerY = config.getDouble(key + ".center.y", 1e-9);
             if (centerX == 1e-9 || centerY == 1e-9) {
@@ -96,12 +103,9 @@ public class RegionConfigLoader {
                 return null;
             }
             shape = new Circle(radius, new Point2D(centerX, centerY));
-        } else {
-            Bukkit.getLogger().severe("Unknown type '"+ type +"' for '" + key + "'");
-            return null;
         }
 
-        return new Region(name, dimension, color, shape);
+        return new Region(key, name, dimension, color, type, shape);
     }
 
 
@@ -110,7 +114,7 @@ public class RegionConfigLoader {
         if (!customConfigFile.exists()) {
             customConfigFile.getParentFile().mkdirs();
             plugin.saveResource("regions.yml", false);
-            Bukkit.getLogger().warning("Region config file not found, saving default");
+            Bukkit.getLogger().warning("[paxterya] Region config file not found, saving default");
         }
 
         FileConfiguration config = new YamlConfiguration();

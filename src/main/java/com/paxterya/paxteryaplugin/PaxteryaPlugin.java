@@ -3,6 +3,7 @@ package com.paxterya.paxteryaplugin;
 import com.paxterya.afk.*;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import com.paxterya.chatWordReplacer.WordReplacer;
+import com.paxterya.dynmap.DynmapRegionDrawer;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
@@ -102,6 +103,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Regions
     RegionManager regionManager = new RegionManager(this);
     this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 169);
   }
 
   @Override

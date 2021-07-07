@@ -12,11 +12,15 @@ import org.bukkit.Location;
 @AllArgsConstructor
 public class Region {
 
+    private String id;
+
     private String name;
 
     private String dimension;
 
     private String color;
+
+    private RegionType type;
 
     private Shape area;
 
@@ -25,6 +29,8 @@ public class Region {
     }
 
     public boolean equals(Region region) {
-        return region != null && region.getName().equals(this.name);
+        return region != null && region.getId().equals(this.id);
     }
+
+    public int hashCode() { return id.hashCode(); }
 }
