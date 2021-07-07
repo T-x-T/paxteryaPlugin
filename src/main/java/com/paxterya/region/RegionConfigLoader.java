@@ -74,7 +74,7 @@ public class RegionConfigLoader {
             PolygonBuilder pb = new PolygonBuilder();
             for (Map<?, ?> point : p) {
                 Integer x = (Integer) point.get("x");
-                Integer z = -(Integer) point.get("z");
+                Integer z = (Integer) point.get("z");
                 if (x == null || z == null) {
                     Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
                     continue;

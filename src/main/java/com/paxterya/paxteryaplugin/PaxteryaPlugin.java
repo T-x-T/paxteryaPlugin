@@ -104,7 +104,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Regions
     regionManager = new RegionManager(this);
     this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
-    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 1);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
   }
 
   @Override
@@ -133,7 +133,7 @@ public class PaxteryaPlugin extends JavaPlugin {
       }
     }.runTaskLater(this, 20);
     regionManager.reload(this);
-    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 1);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
   }
 
 }
