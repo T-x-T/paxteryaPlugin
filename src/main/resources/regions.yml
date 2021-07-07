@@ -10,8 +10,10 @@
 #   Fields dimension and color are optional with defaults 'world' and 'ffffff' respectively.
 #
 # - In addition, all the dynmap area params are supported (but not required): fillcolor, opacity, fillopacity, weight
+#   (if not defined, dynmap default values are used. See https://github.com/webbukkit/dynmap/wiki/Using-markers for more info)
 #
 # - When defining corners for a polygonal region, it is important that the corner points are ordered clock-wise.
+#   Z goes down in dynmap coordinates, which means that from dynmap POV the corners go COUNTER-clock-wise.
 #
 # - Regions should not overlap. This will cause undefined behaviour.
 #   (Overlapping regions with priorities may be implemented in the future)
@@ -21,7 +23,11 @@
 example: # unique key
   name: "Example triangle region"
   dimension: "world" # overworld. Check the world names of your server in the server folder.
-  color: "ff0000"
+  color: "ff0000" # Color used in chat messages and for dynmap area borders
+  fillcolor: "ff0000" # Color for dynmap area fill
+  opacity: "0.3" # Dynmap border opacity
+  fillopacity: "0.3" # Dynmap fill opacity. If zero, the area is not clickable
+  weight: "0.3" # Dynmap border weight
   type: "polygon" # either 'polygon' or 'circle'
   corners: # polygon corners must be ordered CLOCK-WISE
     - {x: 0, z: 0}
