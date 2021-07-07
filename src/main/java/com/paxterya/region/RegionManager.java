@@ -47,7 +47,7 @@ public class RegionManager {
             Region previousRegion = playerRegion.put(player.getUniqueId(), newRegion);
             if (newRegion == null && previousRegion == null) {
                 return;
-            } if (newRegion == null && previousRegion != null) {
+            } if (newRegion == null) {
                 Bukkit.getPluginManager().callEvent(new RegionChangeEvent(player, previousRegion, null));
             } else if (!newRegion.equals(previousRegion)) {
                 Bukkit.getPluginManager().callEvent(new RegionChangeEvent(player, previousRegion, newRegion));
