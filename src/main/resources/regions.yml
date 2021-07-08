@@ -15,8 +15,11 @@
 # - When defining corners for a polygonal region, it is important that the corner points are ordered clock-wise.
 #   Z goes down in dynmap coordinates, which means that from dynmap POV the corners go COUNTER-clock-wise.
 #
-# - Regions should not overlap. This will cause undefined behaviour.
-#   (Overlapping regions with priorities may be implemented in the future)
+# - Subregions: a region can be inside another region. In that case, the subregion should specify its parent
+#   in the field 'subregionof'. Example: subregionof: "exampleParent", where "exampleParent" is the key of the parent region.
+#   Note that the subregion should be completely inside its parent. If it overlaps only partially, the non-overlapping part
+#   wont be considered when checking the region of a location.
+#   Finally, subregions currently cannot have subregions of their own.
 #
 # (delete the examples below)
 
@@ -44,7 +47,7 @@ circleExample: # unique key
     y: 234
   radius: 32
 
-subRegionExample:
+subRegionExample: # this region is inside "example"
   name: "Example subregion"
   subregionof: "example" # refers to the region with key "example"
   color: "00ff00"
