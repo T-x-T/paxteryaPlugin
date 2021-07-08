@@ -6,11 +6,16 @@
 #   only the last one of the duplicate regions would be loaded)
 #
 # - Each region must have all the required fields: name, type and corners or center and radius.
-#   If some required field is missing, the region won't be loaded. (error message will be logged)
-#   Fields dimension and color are optional with defaults 'world' and 'ffffff' respectively.
+#   If some required field is missing, the region won't be loaded. (error message will be logged).
 #
-# - In addition, all the dynmap area params are supported (but not required): fillcolor, opacity, fillopacity, weight
+# - Any additional parameters can be supplied. All the dynmap area params are supported: fillcolor, opacity, fillopacity, weight
 #   (if not defined, dynmap default values are used. See https://github.com/webbukkit/dynmap/wiki/Using-markers for more info)
+#
+# - Rectangle-type regions must have exactly two corners: top left and bottom right (from dynmap POV)
+#
+# - Circle regions must have a center and a radius.
+#
+# - Polygons must have at least 3 corners. Use the rectangle type instead of polygon if the area is rectangular.
 #
 # - When defining corners for a polygonal region, it is important that the corner points are ordered clock-wise.
 #   Z goes down in dynmap coordinates, which means that from dynmap POV the corners go COUNTER-clock-wise.
@@ -31,7 +36,7 @@ example: # unique key
   opacity: "0.3" # Dynmap border opacity
   fillopacity: "0.3" # Dynmap fill opacity. If zero, the area is not clickable
   weight: "0.3" # Dynmap border weight
-  type: "polygon" # either 'polygon' or 'circle'
+  type: "polygon" # either 'polygon', 'circle' or 'rectangle'
   corners: # polygon corners must be ordered CLOCK-WISE
     - {x: 0, z: 0}
     - {x: 0, z: 10}
@@ -56,3 +61,10 @@ subRegionExample: # this region is inside "example"
     x: 3
     y: 3
   radius: 3
+
+rectangleExample:
+  name: "A rectangle"
+  type: "rectangle"
+  corners: # Rectangles must have exactly two corners: first the top left corner and then the bottom right corner
+    - {x: 50, z: -10}
+    - {x: 100, z: 10}

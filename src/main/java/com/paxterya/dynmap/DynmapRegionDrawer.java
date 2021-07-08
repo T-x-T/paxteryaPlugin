@@ -5,6 +5,7 @@ import com.paxterya.region.RegionType;
 import com.paxterya.util.Circle;
 import com.paxterya.util.Point2D;
 import com.paxterya.util.Polygon;
+import com.paxterya.util.Rectangle;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -58,9 +59,9 @@ public class DynmapRegionDrawer {
 
     private static void drawRegion(Region region, PluginCommand markerCommand, CommandSender cs) {
         Bukkit.getLogger().info("Drawing " + region.getId());
-        if (region.getType() == RegionType.POLYGON) {
+        if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
             // dmap area
-            List<Point2D> corners = ((Polygon) region.getArea()).getCorners();
+            List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
             corners.forEach(p -> {
                 String[] args = new String[] {"addcorner", p.getX() + "", "64", p.getY() + "", region.getDimension()};
                 markerCommand.execute(cs, "dmarker", args);
