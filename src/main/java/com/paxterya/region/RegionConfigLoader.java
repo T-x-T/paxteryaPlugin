@@ -13,10 +13,11 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RegionConfigLoader {
 
-    public static String[] optionals = new String[] {"color", "fillcolor", "weight", "opacity", "fillopacity", "subregionof"};
+    public static List<String> required = Arrays.asList("name", "dimension", "type", "corners", "radius", "center");
 
     public static List<Region> loadRegions(Plugin plugin) {
         Bukkit.getLogger().info("[paxterya] Loading regions from config");
@@ -31,13 +32,13 @@ public class RegionConfigLoader {
 
         // process subregions: if is a subregion, find the containing and add to its subregions
         regions.forEach(region -> {
-            String containingRegion = region.getMeta().get("subregionof");
+            String containingRegion = region.getArgs().get("subregionof");
             if (containingRegion != null) {
                 regions.stream().filter(containing -> containing.getId().equals(containingRegion)).forEach(containing -> containing.getSubRegions().add(region));
             }
         });
         // remove subregions from regions list
-        regions.removeIf(region -> region.getMeta().get("subregionof") != null);
+        regions.removeIf(region -> region.getArgs().get("subregionof") != null);
 
         Bukkit.getLogger().info("[paxterya] Region loading complete");
         return regions;
@@ -107,14 +108,12 @@ public class RegionConfigLoader {
         }
 
         // optional fields
-        Map<String, String> meta = new HashMap<>();
-        for (String fieldKey : optionals) {
-            String value = config.getString(key + "." + fieldKey);
-            if (value != null)
-                meta.put(fieldKey, value);
-        }
+        Map<String, String> optionalArgs = new HashMap<>();
+        config.getConfigurationSection(key).getKeys(false).stream()
+                .filter(k -> !required.contains(k))
+                .forEach(k -> optionalArgs.put(k, config.getString(key + "." + k)));
 
-        return new Region(key, name, dimension, type, shape, new ArrayList<>(), meta);
+        return new Region(key, name, dimension, type, shape, new ArrayList<>(), optionalArgs);
     }
 
 

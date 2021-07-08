@@ -56,7 +56,7 @@ public class DynmapRegionDrawer {
 
                 List<String> args = new ArrayList<>(Arrays.asList("addarea", "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
 
-                for (Map.Entry<String, String> e : region.getMeta().entrySet()) {
+                for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
                     args.add(e.getKey() + ":" + e.getValue());
                 }
 
@@ -71,7 +71,7 @@ public class DynmapRegionDrawer {
                         "addcircle", "x:" + center.getX(), "y:64", "z:" + center.getY(), "world:" + region.getDimension(), "radiusx:" + radius, "radiusz:" + radius,
                         "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
 
-                for (Map.Entry<String, String> e : region.getMeta().entrySet()) {
+                for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
                     args.add(e.getKey() + ":" + e.getValue());
                 }
 

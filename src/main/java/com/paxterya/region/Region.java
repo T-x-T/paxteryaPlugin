@@ -27,7 +27,7 @@ public class Region {
 
     private List<Region> subRegions;
 
-    private Map<String, String> meta;
+    private Map<String, String> args;
 
     public boolean contains(Location location) {
         return location.getWorld().getName().equals(dimension) && area.contains(location);
@@ -40,6 +40,6 @@ public class Region {
     public int hashCode() { return id.hashCode(); }
 
     public String getOrDefault(String key, String def) {
-        return meta.getOrDefault(key, def);
+        return args.getOrDefault(key, def);
     }
 }
