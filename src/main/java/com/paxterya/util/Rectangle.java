@@ -15,6 +15,10 @@ public class Rectangle extends Shape{
     private double x2;
     private double y2;
 
+    public Rectangle(Point2D p1, Point2D p2) {
+        x1 = p1.x; y1 = p1.y; x2 = p2.x; y2 = p2.y;
+    }
+
     @Override
     public boolean contains(Point2D p) {
         return p.x > x1 && p.x <= x2 && p.y > y1 && p.y <= y2;
