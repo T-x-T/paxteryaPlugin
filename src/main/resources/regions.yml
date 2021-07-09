@@ -1,11 +1,11 @@
 # Region configuration.
 #
-# Here's some important gotchas:
+# How-to-config-your-regions:
 #
 # - Each region must start with its unique key (if there are duplicate keys,
 #   only the last one of the duplicate regions would be loaded)
 #
-# - Each region must have all the required fields: name, type and corners or center and radius.
+# - Each region must have all the required fields: name, type and corners (and radius for circles).
 #   If some required field is missing, the region won't be loaded. (error message will be logged).
 #
 # - Any additional parameters can be supplied. All the dynmap area params are supported: fillcolor, opacity, fillopacity, weight
@@ -13,7 +13,7 @@
 #
 # - Rectangle-type regions must have exactly two corners: top left and bottom right (from dynmap POV)
 #
-# - Circle regions must have a center and a radius.
+# - Circle regions must have exactly 1 corner as the center, and a radius.
 #
 # - Polygons must have at least 3 corners. Use the rectangle type instead of polygon if the area is rectangular.
 #
@@ -26,45 +26,61 @@
 #   wont be considered when checking the region of a location.
 #   Finally, subregions currently cannot have subregions of their own.
 #
-# (delete the examples below)
+# - Shared points: it seems pretty common that regions have many corner points in common. For example if two districts are next to each other,
+#   they probably share at least two corners. With shared points, you don't have to define the same shared corner point twice.
+#   Instead you can name the point at its first definition, and then reference that named point later. See examples below.
+#
+# (delete the examples once you have internalized how they work)
 
 example: # unique key
-  name: "Example triangle region"
-  dimension: "world" # overworld. Check the world names of your server in the server folder.
-  color: "ff0000" # Color used in chat messages and for dynmap area borders
-  fillcolor: "ff0000" # Color for dynmap area fill
-  opacity: "0.3" # Dynmap border opacity
-  fillopacity: "0.3" # Dynmap fill opacity. If zero, the area is not clickable
-  weight: "0.3" # Dynmap border weight
-  type: "polygon" # either 'polygon', 'circle' or 'rectangle'
+  name: "Example triangle region" # Quotes must to be used if the field has spaces in it.
+  dimension: world # overworld. Check the world names of your server in the server folder.
+  color: ff0000 # Color used in chat messages and for dynmap area borders
+  fillcolor: ff0000 # Color for dynmap area fill
+  opacity: 0.3 # Dynmap border opacity
+  fillopacity: 0.3 # Dynmap fill opacity. If zero, the area is not clickable
+  weight: 0.3 # Dynmap border weight
+  type: polygon # either 'polygon', 'circle' or 'rectangle'
   corners: # polygon corners must be ordered CLOCK-WISE
     - {x: 0, z: 0}
     - {x: 0, z: 10}
     - {x: 10, z: 10}
 
-circleExample: # unique key
-  name: "Example circle"
-  dimension: "world_nether"
-  color: "00ff00"
-  type: "circle"
-  center:
-    x: 123
-    y: 234
-  radius: 32
 
 subRegionExample: # this region is inside "example"
   name: "Example subregion"
-  subregionof: "example" # refers to the region with key "example"
-  color: "00ff00"
-  type: "circle"
-  center:
-    x: 3
-    y: 3
+  subregionof: example # refers to the region with key "example"
+  color: 00ff00
+  type: circle
+  corners:
+    - {x: 3, z: 3}
   radius: 3
+
 
 rectangleExample:
   name: "A rectangle"
-  type: "rectangle"
+  type: rectangle
   corners: # Rectangles must have exactly two corners: first the top left corner and then the bottom right corner
     - {x: 50, z: -10}
     - {x: 100, z: 10}
+
+
+circleExample:
+  name: "Example circle"
+  dimension: world_nether
+  color: 00ff00
+  type: circle
+  corners:
+    - circleCenter: {x: 123, z: 234} # Here a named point 'circleCenter' is defined for later reuse
+  radius: 32
+
+
+smallCircle:
+  name: "A circle using a shared point"
+  dimension: world_nether
+  color: 00ff00
+  type: circle
+  subregionof: circleExample
+  corners:
+    - circleCenter # Here the named point 'circleCenter' is referenced. smallCircle now has the same center as circleExample.
+  radius: 32
