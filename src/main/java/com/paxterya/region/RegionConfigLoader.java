@@ -10,7 +10,6 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class RegionConfigLoader {
 
@@ -34,7 +33,7 @@ public class RegionConfigLoader {
                 regions.stream().filter(containing -> containing.getId().equals(containingRegion)).forEach(containing -> containing.getSubRegions().add(region));
             }
         });
-        // remove subregions from regions list
+        // remove subregions from top-level regions list
         regions.removeIf(region -> region.getArgs().get("subregionof") != null);
 
         Bukkit.getLogger().info("[paxterya] Region loading complete");
@@ -74,57 +73,11 @@ public class RegionConfigLoader {
 
         Shape shape;
         if (type == RegionType.POLYGON) {
-            List<Map<?, ?>> p = config.getMapList(key + ".corners");
-            if (p.size() < 3) {
-                Bukkit.getLogger().severe("Invalid number of corners for polygon '" + key + "', was " +p.size()+ ", should be at least 3");
-                return null;
-            }
-            PolygonBuilder pb = new PolygonBuilder();
-            for (Map<?, ?> point : p) {
-                Integer x = (Integer) point.get("x");
-                Integer z = (Integer) point.get("z");
-                if (x == null || z == null) {
-                    Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
-                    return null;
-                }
-                pb.addCorner(x, z);
-            }
-            shape = pb.build();
-
+            shape = getPolygon(key, config);
         } else if (type == RegionType.CIRCLE) {
-            double centerX = config.getDouble(key + ".center.x", 1e-9);
-            double centerY = config.getDouble(key + ".center.y", 1e-9);
-            if (centerX == 1e-9 || centerY == 1e-9) {
-                Bukkit.getLogger().severe("Center point for '" + key + "' is invalid");
-                return null;
-            }
-            double radius = config.getDouble(key + ".radius", 1e-9);
-            if (radius == 1e-9) {
-                Bukkit.getLogger().severe("Radius for '" + key + "' is invalid");
-                return null;
-            }
-            shape = new Circle(radius, new Point2D(centerX, centerY));
-
+            shape = getCircle(key, config);
         } else { // type == Type.RECTANGLE
-            List<Map<?, ?>> p = config.getMapList(key + ".corners");
-            if (p.isEmpty()) {
-                Bukkit.getLogger().severe("Corner points for '" + key + "' not found");
-                return null;
-            }
-            if (p.size() != 2) {
-                Bukkit.getLogger().severe("Invalid number of corners for rectangle '" + key + "', was " +p.size()+ ", should be 2");
-                return null;
-            }
-
-            Integer x1 = (Integer) p.get(0).get("x");
-            Integer z1 = (Integer) p.get(0).get("z");
-            Integer x2 = (Integer) p.get(1).get("x");
-            Integer z2 = (Integer) p.get(1).get("z");
-            if (x1 == null || z1 == null || x2 == null || z2 == null) {
-                Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
-                return null;
-            }
-            shape = new Rectangle(x1, z1, x2, z2);
+            shape = getRectangle(key, config);
         }
 
         // optional fields
@@ -134,6 +87,65 @@ public class RegionConfigLoader {
                 .forEach(k -> optionalArgs.put(k, config.getString(key + "." + k)));
 
         return new Region(key, name, dimension, type, shape, new ArrayList<>(), optionalArgs);
+    }
+
+
+    private static Polygon getPolygon(String key, FileConfiguration config) {
+        List<Map<?, ?>> p = config.getMapList(key + ".corners");
+        if (p.size() < 3) {
+            Bukkit.getLogger().severe("Invalid number of corners for polygon '" + key + "', was " +p.size()+ ", should be at least 3");
+            return null;
+        }
+        PolygonBuilder pb = new PolygonBuilder();
+        for (Map<?, ?> point : p) {
+            Integer x = (Integer) point.get("x");
+            Integer z = (Integer) point.get("z");
+            if (x == null || z == null) {
+                Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
+                return null;
+            }
+            pb.addCorner(x, z);
+        }
+        return pb.build();
+    }
+
+
+    private static Circle getCircle(String key, FileConfiguration config) {
+        double centerX = config.getDouble(key + ".center.x", 1e-9);
+        double centerY = config.getDouble(key + ".center.y", 1e-9);
+        if (centerX == 1e-9 || centerY == 1e-9) {
+            Bukkit.getLogger().severe("Center point for '" + key + "' is invalid");
+            return null;
+        }
+        double radius = config.getDouble(key + ".radius", 1e-9);
+        if (radius == 1e-9) {
+            Bukkit.getLogger().severe("Radius for '" + key + "' is invalid");
+            return null;
+        }
+        return new Circle(radius, new Point2D(centerX, centerY));
+    }
+
+
+    private static Rectangle getRectangle(String key, FileConfiguration config) {
+        List<Map<?, ?>> p = config.getMapList(key + ".corners");
+        if (p.isEmpty()) {
+            Bukkit.getLogger().severe("Corner points for '" + key + "' not found");
+            return null;
+        }
+        if (p.size() != 2) {
+            Bukkit.getLogger().severe("Invalid number of corners for rectangle '" + key + "', was " +p.size()+ ", should be 2");
+            return null;
+        }
+
+        Integer x1 = (Integer) p.get(0).get("x");
+        Integer z1 = (Integer) p.get(0).get("z");
+        Integer x2 = (Integer) p.get(1).get("x");
+        Integer z2 = (Integer) p.get(1).get("z");
+        if (x1 == null || z1 == null || x2 == null || z2 == null) {
+            Bukkit.getLogger().severe("A corner point for '" + key + "' is invalid");
+            return null;
+        }
+        return new Rectangle(x1, z1, x2, z2);
     }
 
 
