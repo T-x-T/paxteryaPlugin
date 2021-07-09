@@ -110,6 +110,6 @@ public class DynmapRegionDrawer {
             }
         }
         // draw subregions recursively
-        region.getSubRegions().forEach(r -> drawRegion(region, markerCommand, cs));
+        region.getSubRegions().forEach(r -> drawRegion(r, markerCommand, cs));
     }
 }
