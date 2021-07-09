@@ -17,14 +17,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contains the static dynmap region draw method
+ */
 public class DynmapRegionDrawer {
 
 
+    /**
+     * Starts the dynmap region draw process after a specified delay
+     * @param plugin PaxteryaPlugin
+     * @param regions The top-level regions
+     * @param delay The delay in ticks
+     */
     public static void drawRegionsLater(Plugin plugin, List<Region> regions, int delay) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> drawRegions(regions), delay);
     }
 
 
+    /**
+     * Checks if dynmap is available and then draws the regions.
+     * @param regions to draw
+     */
     private static void drawRegions(List<Region> regions) {
         Bukkit.getLogger().info("[paxterya] Starting dynmap region drawing");
         Plugin dynmap = Bukkit.getPluginManager().getPlugin("dynmap");
@@ -48,48 +61,55 @@ public class DynmapRegionDrawer {
         markerCommand.execute(cs, "dmarker", new String[]{"deleteset", "regions"});
         markerCommand.execute(cs, "dmarker", new String[]{"addset", "regions"});
 
-        regions.forEach(region -> {
-            drawRegion(region, markerCommand, cs);
-            region.getSubRegions().forEach(sub -> drawRegion(sub, markerCommand, cs));
-        });
+        regions.forEach(region -> drawRegion(region, markerCommand, cs));
 
         Bukkit.getLogger().info("[paxterya] dynmap region drawing complete");
     }
 
 
+    /**
+     * Draws a region to dynmap if 'draw' not set to 'false', and then recursively draws its subregions.
+     * @param region The region to draw
+     * @param markerCommand The dmarker command
+     * @param cs The console command sender
+     */
     private static void drawRegion(Region region, PluginCommand markerCommand, CommandSender cs) {
-        Bukkit.getLogger().info("Drawing " + region.getId());
-        if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
-            // dmap area
-            List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
-            corners.forEach(p -> {
-                String[] args = new String[] {"addcorner", p.getX() + "", "64", p.getY() + "", region.getDimension()};
-                markerCommand.execute(cs, "dmarker", args);
-            });
+        if (region.getOrDefault("draw", "true").equalsIgnoreCase("true")) {
+            Bukkit.getLogger().info("Drawing " + region.getId());
+            if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
+                // dmap area
+                List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
+                corners.forEach(p -> {
+                    String[] args = new String[]{"addcorner", p.getX() + "", "64", p.getY() + "", region.getDimension()};
+                    markerCommand.execute(cs, "dmarker", args);
+                });
 
-            List<String> args = new ArrayList<>(Arrays.asList("addarea", "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
+                List<String> args = new ArrayList<>(Arrays.asList("addarea", "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
 
-            for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
-                args.add(e.getKey() + ":" + e.getValue());
+                for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
+                    args.add(e.getKey() + ":" + e.getValue());
+                }
+
+                Bukkit.getLogger().info(StringUtils.join(args, " "));
+                markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
+            } else {
+                // dmap circle
+                Point2D center = ((Circle) region.getArea()).getCenter();
+                double radius = ((Circle) region.getArea()).getRadius();
+
+                List<String> args = new ArrayList<>(Arrays.asList(
+                        "addcircle", "x:" + center.getX(), "y:64", "z:" + center.getY(), "world:" + region.getDimension(), "radiusx:" + radius, "radiusz:" + radius,
+                        "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
+
+                for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
+                    args.add(e.getKey() + ":" + e.getValue());
+                }
+
+                Bukkit.getLogger().info(StringUtils.join(args, " "));
+                markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
             }
-
-            Bukkit.getLogger().info(StringUtils.join(args, " "));
-            markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
-        } else {
-            // dmap circle
-            Point2D center = ((Circle) region.getArea()).getCenter();
-            double radius = ((Circle) region.getArea()).getRadius();
-
-            List<String> args = new ArrayList<>(Arrays.asList(
-                    "addcircle", "x:" + center.getX(), "y:64", "z:" + center.getY(), "world:" + region.getDimension(), "radiusx:" + radius, "radiusz:" + radius,
-                    "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
-
-            for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
-                args.add(e.getKey() + ":" + e.getValue());
-            }
-
-            Bukkit.getLogger().info(StringUtils.join(args, " "));
-            markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
         }
+        // draw subregions recursively
+        region.getSubRegions().forEach(r -> drawRegion(region, markerCommand, cs));
     }
 }
