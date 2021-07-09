@@ -75,7 +75,7 @@ public class DynmapRegionDrawer {
      */
     private static void drawRegion(Region region, PluginCommand markerCommand, CommandSender cs) {
         if (region.getOrDefault("draw", "true").equalsIgnoreCase("true")) {
-            Bukkit.getLogger().info("Drawing " + region.getId());
+            Bukkit.getLogger().info("Drawing '" + region.getId() + "'");
             if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
                 // dmap area
                 List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
