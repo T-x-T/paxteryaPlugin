@@ -11,6 +11,8 @@ Custom plugin to integrate the Paxterya Minecraft server with our backend servic
 
 - Can replace specific words in chat messages with custom game information
 
+- Allows the configuration of 'regions', general purpose areas in the world which are drawn to dynmap and show an in-game message when entering them
+
 ## Gradle tasks
 
 `gradlew build` to run tests and generate the plugin jar in `build/libs/`
