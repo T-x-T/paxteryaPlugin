@@ -36,7 +36,8 @@
 example: # unique key
   name: "Example triangle region" # Quotes must to be used if the field has spaces in it.
   dimension: world # overworld. Check the world names of your server in the server folder.
-  color: ff0000 # Color used in chat messages and for dynmap area borders
+  chatcolor: ff0000 # Color used in chat messages
+  color: ff0000 # Color used for dynmap area borders
   fillcolor: ff0000 # Color for dynmap area fill
   opacity: 0.3 # Dynmap border opacity
   fillopacity: 0.3 # Dynmap fill opacity. If zero, the area is not clickable
@@ -51,6 +52,7 @@ example: # unique key
 subRegionExample: # this region is inside "example"
   name: "Example subregion"
   subregionof: example # refers to the region with key "example"
+  chatcolor: 00ff00
   color: 00ff00
   type: circle
   corners:
@@ -70,6 +72,7 @@ circleExample:
   name: "Example circle"
   dimension: world_nether
   color: 00ff00
+  chatcolor: 00ff00
   type: circle
   corners:
     - circleCenter: {x: 123, z: 234} # Here a named point 'circleCenter' is defined for later reuse

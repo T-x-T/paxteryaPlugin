@@ -20,14 +20,14 @@ public class RegionChangeListener implements Listener {
                     .append(Component.text("Leaving ").color(msgColor).decorate(TextDecoration.ITALIC))
                     .append(Component.text()
                             .content(event.getPreviousRegion().getName())
-                            .color(TextColor.fromCSSHexString("#" + event.getPreviousRegion().getOrDefault("color", defaultNameColor)))
+                            .color(TextColor.fromCSSHexString("#" + event.getPreviousRegion().getOrDefault("chatcolor", defaultNameColor)))
                             .decorate(TextDecoration.ITALIC)));
         } else {
             player.sendMessage(Component.text()
                     .append(Component.text("Entering ").color(msgColor).decorate(TextDecoration.ITALIC))
                     .append(Component.text()
                             .content(event.getNewRegion().getName())
-                            .color(TextColor.fromCSSHexString("#" + event.getNewRegion().getOrDefault("color", defaultNameColor)))
+                            .color(TextColor.fromCSSHexString("#" + event.getNewRegion().getOrDefault("chatcolor", defaultNameColor)))
                             .decorate(TextDecoration.ITALIC)));
         }
     }
