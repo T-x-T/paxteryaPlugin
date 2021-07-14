@@ -21,13 +21,14 @@
 #   Z goes down in dynmap coordinates, which means that from dynmap POV the corners go COUNTER-clock-wise.
 #
 # - Subregions: a region can be inside another region. In that case, the subregion should specify its parent
-#   in the field 'subregionof'. Example: subregionof: "exampleParent", where "exampleParent" is the key of the parent region.
+#   in the field 'subregionof'. Example: subregionof: exampleParent, where "exampleParent" is the key of the parent region.
 #   Note that the subregion should be completely inside its parent. If it overlaps only partially, the non-overlapping part
 #   wont be considered when checking the region of a location.
-#   Finally, subregions currently cannot have subregions of their own.
+#   Subregions can also have any number of subregions of their own and so on.
 #
-# - Shared points: it seems pretty common that regions have many corner points in common. For example if two districts are next to each other,
-#   they probably share at least two corners. With shared points, you don't have to define the same shared corner point twice.
+# - Shared points: it seems pretty common that regions have many corner points in common. For example if two districts are 
+#   next to each other, they probably share at least two corners, potentially a dozen. 
+#   With shared points, you don't have to define the same shared corner point twice.
 #   Instead you can name the point at its first definition, and then reference that named point later. See examples below.
 #
 # (delete the examples once you have internalized how they work)
