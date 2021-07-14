@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'java.paxterya'
-version '0.8.2'
+version '0.9.0-snapshot'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -17,6 +17,11 @@ dependencies {
     implementation "io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT"
 
     implementation 'com.sun.istack:istack-commons-runtime:4.0.1'
+
+    implementation 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'

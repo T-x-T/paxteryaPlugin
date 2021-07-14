@@ -3,6 +3,7 @@ package com.paxterya.paxteryaplugin;
 import com.paxterya.afk.*;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import com.paxterya.chatWordReplacer.WordReplacer;
+import com.paxterya.dynmap.DynmapRegionDrawer;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
@@ -10,6 +11,8 @@ import com.paxterya.message.MessageTabCompleter;
 import com.paxterya.paxteryaPlayer.OnJoinHandler;
 import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
+import com.paxterya.region.RegionChangeListener;
+import com.paxterya.region.RegionManager;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +24,7 @@ public class PaxteryaPlugin extends JavaPlugin {
   private Roles allRoles;
   private AfkCore afkCore;
   private AfkPlayerKicker afkPlayerKicker;
+  private RegionManager regionManager;
 
   public PaxteryaPlugin(){
 
@@ -95,6 +99,12 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Initialize reload
     PaxteryaCommand reloadCommand = new PaxteryaCommand(this);
     this.getCommand("paxterya").setExecutor(reloadCommand);
+
+
+    //Regions
+    regionManager = new RegionManager(this);
+    this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
   }
 
   @Override
@@ -122,6 +132,8 @@ public class PaxteryaPlugin extends JavaPlugin {
         allRoles = new Roles(plugin);
       }
     }.runTaskLater(this, 20);
+    regionManager.reload(this);
+    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
   }
 
 }
