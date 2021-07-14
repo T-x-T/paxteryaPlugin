@@ -80,6 +80,7 @@ smallCircle:
   dimension: world_nether
   color: 00ff00
   type: circle
+  draw: false # This optional argument, when set to false, makes the region not be drawn to dynmap
   subregionof: circleExample
   corners:
     - circleCenter # Here the named point 'circleCenter' is referenced. smallCircle now has the same center as circleExample.
