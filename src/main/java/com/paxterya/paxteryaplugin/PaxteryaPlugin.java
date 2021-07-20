@@ -8,8 +8,10 @@ import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
 import com.paxterya.message.MessageTabCompleter;
+import com.paxterya.moderatorTools.ModeratorCommand;
+import com.paxterya.moderatorTools.ModeratorCommandTablistCompleter;
+import com.paxterya.moderatorTools.SpectatorHider;
 import com.paxterya.paxteryaPlayer.OnJoinHandler;
-import com.paxterya.paxteryaPlayer.PaxteryaPlayer;
 import com.paxterya.paxteryaPlayer.TablistNameWrapper;
 import com.paxterya.region.RegionChangeListener;
 import com.paxterya.region.RegionManager;
@@ -105,6 +107,14 @@ public class PaxteryaPlugin extends JavaPlugin {
     regionManager = new RegionManager(this);
     this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
     DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
+
+    //ModeratorTools
+    SpectatorHider spectatorHider = new SpectatorHider(this);
+    this.getServer().getPluginManager().registerEvents(spectatorHider, this);
+    ModeratorCommand moderatorCommand = new ModeratorCommand(this);
+    this.getCommand("moderator").setExecutor(moderatorCommand);
+    ModeratorCommandTablistCompleter moderatorCommandTablistCompleter = new ModeratorCommandTablistCompleter();
+    this.getCommand("moderator").setTabCompleter(moderatorCommandTablistCompleter);
   }
 
   @Override

@@ -1,5 +1,5 @@
 name: paxterya
-version: "0.9.1"
+version: "0.10.0"
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.17"
@@ -31,4 +31,7 @@ commands:
     usage: /<command> to go afk and /<command> again to go un-afk
   getafkplayers:
     description: Lists all afk players
+    usage: /<command>
+  moderator:
+    description: Tools for moderators
     usage: /<command>
