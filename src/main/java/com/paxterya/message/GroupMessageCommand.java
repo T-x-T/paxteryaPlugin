@@ -55,7 +55,7 @@ public class GroupMessageCommand  implements CommandExecutor {
     if(label.equalsIgnoreCase("gmsg") || label.equalsIgnoreCase("greply") || label.equalsIgnoreCase("gr") || label.equalsIgnoreCase("gm")){
       //create the message by joining the arguments
       String message = StringUtils.join(args," ");
-      if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
+      //if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
       sendGroupDM(sender, message);
       return true;
     }

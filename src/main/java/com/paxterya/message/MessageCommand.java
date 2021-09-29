@@ -45,7 +45,7 @@ public class MessageCommand implements CommandExecutor {
 
       //create the message by joining arguments from 1 to args.length
       String message = StringUtils.join(args," ",1, args.length);
-      if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
+      //if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
 
       //Check if supplied player exists
       if(recipient != null){
@@ -65,7 +65,7 @@ public class MessageCommand implements CommandExecutor {
 
       //create the message by joining arguments from 1 to args.length
       String message = StringUtils.join(args, " ");
-      if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
+      //if (shouldReplaceWords) message = wordReplacer.replaceWords(message, sender);
 
       rCommand(sender, message);
       return true;

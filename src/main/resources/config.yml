@@ -38,11 +38,11 @@ replace_words_in:
 word_replacer_rules:
 #Syntax: <word to replace>: '<replacement>'.
 #Keywords that are replaced with special player information are:
-#'PLAYER_COORDS', 'PLAYER_FULLCOORDS', 'PLAYER_COOLCOORDS', 'PLAYER_BIOME', 'PLAYER_TOOL', 'PLAYER_DIAMONDS',
+#'PLAYER_COORDS', 'PLAYER_FULLCOORDS', 'PLAYER_BIOME', 'PLAYER_TOOL', 'PLAYER_DIAMONDS',
 #'PLAYER_SPAWN', 'PLAYER_PLAYTIME', 'PLAYER_SPEED', 'PLAYER_XP'
   -
-    mycoords: 'PLAYER_COOLCOORDS'
-    #myfullcoords: 'PLAYER_FULLCOORDS'
+    mycoords: 'PLAYER_COORDS'
+    myfullcoords: 'PLAYER_FULLCOORDS'
     mytool: 'PLAYER_TOOL'
     mydias: 'PLAYER_DIAMONDS'
     myspawn: 'PLAYER_SPAWN'
@@ -50,5 +50,9 @@ word_replacer_rules:
     mybiome: 'PLAYER_BIOME'
     myspeed: 'PLAYER_SPEED'
     myxp: 'PLAYER_XP'
+
+# By setting this to true, the server will Broadcast messages with special keywords (and cancel the chat message), so that they can contain
+# special components such as hover- and click-events
+word_replacer_broadcast: true
 
 afkKickTimeMinutes: 6000

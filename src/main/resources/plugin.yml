@@ -1,5 +1,5 @@
 name: paxterya
-version: "0.10.0"
+version: "0.11.0"
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.17"
@@ -35,3 +35,7 @@ commands:
   moderator:
     description: Tools for moderators
     usage: /<command>
+  navigation:
+    description: Navigation utility
+    usage: /<command> x z [world]
+    aliases: [nav]
