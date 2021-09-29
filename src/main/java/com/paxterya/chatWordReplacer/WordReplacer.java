@@ -1,51 +1,48 @@
 package com.paxterya.chatWordReplacer;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
 
 public class WordReplacer {
-    private Map<String, Object> replacerMap;
-    private Pattern regex;
+    private Map<String, String> replacerMap;
+    private boolean broadcast;
 
     public WordReplacer(JavaPlugin plugin) {
-        this.regex = Pattern.compile("\\b");
-        this.replacerMap = (Map<String, Object>) plugin.getConfig().getList("word_replacer_rules").get(0);
+        this.replacerMap = (Map<String, String>) plugin.getConfig().getList("word_replacer_rules").get(0);
+        this.broadcast = plugin.getConfig().getBoolean("word_replacer_broadcast");
+        Bukkit.getLogger().log(Level.INFO, "[WordReplacer] Broadcast mode set to " + broadcast);
     }
 
-    public String replaceWords(String message, Player player) {
-        StringBuilder newMessageBuilder = new StringBuilder();
-        boolean edited = false;
-        for (String word : regex.split(message)) {
-            if (replacerMap.containsKey(word)) {
-                newMessageBuilder.append(getFormattedReplacement((String) replacerMap.get(word), player));
-                edited = true;
-            } else {
-                newMessageBuilder.append(word);
+    public Component replaceWords(TextComponent message, Player player) {
+        if (replacerMap.containsKey(message.content())) {
+            Component replacement = getFormattedReplacement(replacerMap.get(message.content()), player);
+            if (broadcast) {
+                Bukkit.getServer().broadcast(Component.text("<" + player.getName() + "> ").append(replacement));
+                return null;
             }
+            return replacement;
         }
-        if (edited) {
-            return newMessageBuilder.toString();
-        } else {
-            return message;
-        }
+        return message;
     }
 
-    private String getFormattedReplacement(String value, Player player) {
-        switch (value) {
-            case "PLAYER_COORDS": return PlayerInfo.coordsAsString(player);
-            case "PLAYER_FULLCOORDS": return PlayerInfo.fullCoordsAsString(player);
-            case "PLAYER_COOLCOORDS": return PlayerInfo.coolCoordsAsString(player);
-            case "PLAYER_TOOL": return PlayerInfo.heldToolAsString(player);
-            case "PLAYER_DIAMONDS": return PlayerInfo.enderChestDiamondsAsString(player);
-            case "PLAYER_SPAWN": return PlayerInfo.spawnPointAsString(player);
-            case "PLAYER_PLAYTIME": return PlayerInfo.playTimeAsString(player);
-            case "PLAYER_BIOME": return PlayerInfo.biomeAsString(player);
-            case "PLAYER_SPEED": return PlayerInfo.speedAsString(player);
-            case "PLAYER_XP": return PlayerInfo.xpAsString(player);
-            default: return value;
-        }
+    private Component getFormattedReplacement(String value, Player player) {
+        return switch (value) {
+            case "PLAYER_COORDS" -> PlayerInfo.coords(player);
+            case "PLAYER_FULLCOORDS" -> PlayerInfo.fullCoords(player);
+            case "PLAYER_TOOL" -> PlayerInfo.heldTool(player);
+            case "PLAYER_DIAMONDS" -> PlayerInfo.enderChestDiamonds(player);
+            case "PLAYER_SPAWN" -> PlayerInfo.spawnPoint(player);
+            case "PLAYER_PLAYTIME" -> PlayerInfo.playTime(player);
+            case "PLAYER_BIOME" -> PlayerInfo.biome(player);
+            case "PLAYER_SPEED" -> PlayerInfo.speed(player);
+            case "PLAYER_XP" -> PlayerInfo.xp(player);
+            default -> Component.text(value);
+        };
     }
 }

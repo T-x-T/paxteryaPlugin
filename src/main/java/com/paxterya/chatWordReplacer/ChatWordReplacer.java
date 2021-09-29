@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ChatWordReplacer implements Listener {
     private WordReplacer wordReplacer;
     private boolean shouldReplaceWords;
+
     public ChatWordReplacer(JavaPlugin plugin, WordReplacer wordReplacer) {
         this.wordReplacer = wordReplacer;
         this.shouldReplaceWords = plugin.getConfig().getBoolean("replace_words_in.global");
@@ -18,8 +19,12 @@ public class ChatWordReplacer implements Listener {
     @EventHandler
     public void onAsyncPlayerChatEvent(AsyncChatEvent event) {
         if (shouldReplaceWords) {
-            String content = ((TextComponent) event.message()).content();
-            event.message(Component.text(wordReplacer.replaceWords(content, event.getPlayer())));
+            Component content = event.message();
+            Component result = wordReplacer.replaceWords((TextComponent) content, event.getPlayer());
+            if (result != null)
+                event.message(result);
+            else
+                event.setCancelled(true);
         }
     }
 }

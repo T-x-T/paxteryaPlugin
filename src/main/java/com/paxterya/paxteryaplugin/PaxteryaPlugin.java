@@ -2,6 +2,7 @@ package com.paxterya.paxteryaplugin;
 
 import com.paxterya.afk.*;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
+import com.paxterya.chatWordReplacer.NavigationCommand;
 import com.paxterya.chatWordReplacer.WordReplacer;
 import com.paxterya.dynmap.DynmapRegionDrawer;
 import com.paxterya.message.GroupMessageCommand;
@@ -115,6 +116,10 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("moderator").setExecutor(moderatorCommand);
     ModeratorCommandTablistCompleter moderatorCommandTablistCompleter = new ModeratorCommandTablistCompleter();
     this.getCommand("moderator").setTabCompleter(moderatorCommandTablistCompleter);
+
+    //Navigation
+    NavigationCommand navigationCommand = new NavigationCommand();
+    this.getCommand("navigation").setExecutor(navigationCommand);
   }
 
   @Override
