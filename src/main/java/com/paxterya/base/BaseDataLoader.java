@@ -67,7 +67,10 @@ public class BaseDataLoader {
 
     private static void saveBase(FileConfiguration config, Base base) {
         ConfigurationSection baseSection = config.createSection(String.valueOf(base.getId()));
-        baseSection.set("location", base.getLocation());
+        Location blockLocation = base.getLocation().toBlockLocation();
+        blockLocation.setYaw(0f);
+        blockLocation.setPitch(0f);
+        baseSection.set("location", blockLocation);
         ConfigurationSection ownersSection = baseSection.createSection("owners");
         base.getOwners().forEach(((uuid, name) -> ownersSection.set(uuid.toString(), name)));
     }
