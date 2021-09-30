@@ -42,6 +42,7 @@ public class WordReplacer {
             case "PLAYER_BIOME" -> PlayerInfo.biome(player);
             case "PLAYER_SPEED" -> PlayerInfo.speed(player);
             case "PLAYER_XP" -> PlayerInfo.xp(player);
+            case "PLAYER_BASE" -> PlayerInfo.base(player);
             default -> Component.text(value);
         };
     }

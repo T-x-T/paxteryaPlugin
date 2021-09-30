@@ -127,7 +127,8 @@ public class PaxteryaPlugin extends JavaPlugin {
     this.getCommand("navigation").setTabCompleter(new NavigationCommand.TabCompleter());
 
     //Bases
-    baseManager = new BaseManager(this);
+    BaseManager.init(this);
+    baseManager = BaseManager.instance;
     BaseCommand baseCommand = new BaseCommand(baseManager);
     this.getCommand("base").setExecutor(baseCommand);
     this.getCommand("base").setTabCompleter(new BaseCommand.TabCompleter());

@@ -15,6 +15,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BaseManager {
 
+    public static BaseManager instance;
+
+    public static void init(Plugin plugin) {
+        instance = new BaseManager(plugin);
+    }
+
     @Getter
     private List<Base> bases;
 
