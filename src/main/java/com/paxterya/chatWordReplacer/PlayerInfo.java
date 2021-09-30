@@ -1,5 +1,8 @@
 package com.paxterya.chatWordReplacer;
 
+import com.paxterya.base.Base;
+import com.paxterya.base.BaseManager;
+import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -20,11 +23,11 @@ import java.util.Iterator;
  */
 public class PlayerInfo {
     public static Component coords(Player player) {
-        return navigableCoords(player.getLocation(), false);
+        return navigableCoords(player.getLocation(), TextDecoration.ITALIC, false);
     }
 
     public static Component fullCoords(Player player) {
-        return navigableCoords(player.getLocation(), true);
+        return navigableCoords(player.getLocation(), TextDecoration.ITALIC, true);
     }
 
     public static Component biome(Player player) {
@@ -103,7 +106,7 @@ public class PlayerInfo {
         if (spawn == null) {
             spawn = player.getWorld().getSpawnLocation();
         }
-        return navigableCoords(spawn, true);
+        return navigableCoords(spawn, TextDecoration.BOLD, true);
     }
 
     public static Component playTime(Player player) {
@@ -122,7 +125,13 @@ public class PlayerInfo {
         return Component.text("§elvl " + player.getLevel() + "§r");
     }
 
-    public static Component navigableCoords(Location location, boolean full) {
+    public static Component base(Player player) {
+        Base base = BaseManager.instance.getBaseOf(player);
+        if (base == null) return spawnPoint(player);
+        return navigableCoords(base.getLocation(), TextDecoration.UNDERLINED, false);
+    }
+
+    public static Component navigableCoords(Location location, TextDecoration decoration, boolean full) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
@@ -131,6 +140,6 @@ public class PlayerInfo {
                 .hoverEvent(HoverEvent.showText(Component.text("Click for directions")))
                 .clickEvent(ClickEvent.runCommand("/navigation " + x + " " + z + " " + location.getWorld().getName()))
                 .color(getDimensionColor(location))
-                .decorate(TextDecoration.ITALIC);
+                .decorate(decoration);
     }
 }

@@ -1,0 +1,5 @@
+# Bases are stored in this file in the format
+# id: int
+# location: Location
+# owners:
+#   - UUID: name (String)

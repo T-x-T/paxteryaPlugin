@@ -1,5 +1,5 @@
 name: paxterya
-version: "0.11.0"
+version: "0.12.0"
 author: Paxterya
 main: com.paxterya.paxteryaplugin.PaxteryaPlugin
 api-version: "1.17"
@@ -39,3 +39,7 @@ commands:
     description: Navigation utility
     usage: /<command> x z [world]
     aliases: [nav]
+  base:
+    description: Player base/home command
+    usage: /<command> set|unset
+    aliases: [home]

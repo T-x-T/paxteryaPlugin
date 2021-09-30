@@ -1,10 +1,13 @@
 package com.paxterya.paxteryaplugin;
 
 import com.paxterya.afk.*;
+import com.paxterya.base.BaseCommand;
+import com.paxterya.base.BaseManager;
 import com.paxterya.chatWordReplacer.ChatWordReplacer;
 import com.paxterya.chatWordReplacer.NavigationCommand;
 import com.paxterya.chatWordReplacer.WordReplacer;
-import com.paxterya.dynmap.DynmapRegionDrawer;
+import com.paxterya.dynmap.BaseDrawer;
+import com.paxterya.dynmap.RegionDrawer;
 import com.paxterya.message.GroupMessageCommand;
 import com.paxterya.message.GroupMessageTabCompleter;
 import com.paxterya.message.MessageCommand;
@@ -28,6 +31,7 @@ public class PaxteryaPlugin extends JavaPlugin {
   private AfkCore afkCore;
   private AfkPlayerKicker afkPlayerKicker;
   private RegionManager regionManager;
+  private BaseManager baseManager;
 
   public PaxteryaPlugin(){
 
@@ -107,7 +111,7 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Regions
     regionManager = new RegionManager(this);
     this.getServer().getPluginManager().registerEvents(new RegionChangeListener(), this);
-    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
+    RegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
 
     //ModeratorTools
     SpectatorHider spectatorHider = new SpectatorHider(this);
@@ -120,6 +124,14 @@ public class PaxteryaPlugin extends JavaPlugin {
     //Navigation
     NavigationCommand navigationCommand = new NavigationCommand();
     this.getCommand("navigation").setExecutor(navigationCommand);
+    this.getCommand("navigation").setTabCompleter(new NavigationCommand.TabCompleter());
+
+    //Bases
+    BaseManager.init(this);
+    baseManager = BaseManager.instance;
+    BaseCommand baseCommand = new BaseCommand(baseManager);
+    this.getCommand("base").setExecutor(baseCommand);
+    this.getCommand("base").setTabCompleter(new BaseCommand.TabCompleter());
   }
 
   @Override
@@ -147,8 +159,12 @@ public class PaxteryaPlugin extends JavaPlugin {
         allRoles = new Roles(plugin);
       }
     }.runTaskLater(this, 20);
+
     regionManager.reload(this);
-    DynmapRegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
+    RegionDrawer.drawRegionsLater(this, regionManager.getRegions(), 16);
+
+    baseManager.reload(this);
+    BaseDrawer.drawBasesLater(this, baseManager.getBases(), 32);
   }
 
 }
