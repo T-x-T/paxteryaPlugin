@@ -127,6 +127,7 @@ public class PlayerInfo {
 
     public static Component base(Player player) {
         Base base = BaseManager.instance.getBaseOf(player);
+        if (base == null) return spawnPoint(player);
         return navigableCoords(base.getLocation(), TextDecoration.UNDERLINED, false);
     }
 
