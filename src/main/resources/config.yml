@@ -55,4 +55,8 @@ word_replacer_rules:
 # special components such as hover- and click-events
 word_replacer_broadcast: true
 
+# Bases
+base_update_task_period: 60 # seconds
+base_merge_distance: 20
+
 afkKickTimeMinutes: 6000

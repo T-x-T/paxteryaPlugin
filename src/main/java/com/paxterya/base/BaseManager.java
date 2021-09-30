@@ -27,7 +27,7 @@ public class BaseManager {
     private final AtomicBoolean hasUpdates = new AtomicBoolean();
 
     public BaseManager(Plugin plugin) {
-        mergeDistance = 20;
+        mergeDistance = plugin.getConfig().getInt("base_merge_distance", 20);
         reload(plugin);
         int periodTicks = plugin.getConfig().getInt("base_update_task_period", 60) * 20;
         Bukkit.getScheduler().runTaskTimer(plugin, getUpdateTask(plugin), periodTicks, periodTicks);
