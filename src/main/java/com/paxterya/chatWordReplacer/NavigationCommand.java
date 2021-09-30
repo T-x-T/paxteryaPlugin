@@ -1,5 +1,6 @@
 package com.paxterya.chatWordReplacer;
 
+import com.paxterya.base.BaseCommand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,9 +8,13 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class NavigationCommand implements CommandExecutor {
 
@@ -88,5 +93,15 @@ public class NavigationCommand implements CommandExecutor {
 
     private static double angle(Vector v1, Vector v2) {
         return Math.toDegrees(v1.angle(v2)) * Math.signum(v1.crossProduct(v2).getY());
+    }
+
+    public static class TabCompleter implements org.bukkit.command.TabCompleter {
+
+        private final List<String> empty = List.of("");
+
+        @Override
+        public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+            return empty;
+        }
     }
 }

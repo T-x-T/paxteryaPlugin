@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Contains the static dynmap region draw method
  */
-public class DynmapRegionDrawer {
+public class RegionDrawer {
 
 
     /**
