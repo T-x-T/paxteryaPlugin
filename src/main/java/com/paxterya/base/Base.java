@@ -21,7 +21,7 @@ public class Base {
 
     private String name;
 
-    private int id;
+    private long id;
 
     public String getName() {
         if (name != null) return name; // if cached, return

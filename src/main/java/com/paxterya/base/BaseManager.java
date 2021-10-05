@@ -28,14 +28,14 @@ public class BaseManager {
 
     private final int mergeDistance;
 
-    private int nextId;
+    private long lastId;
 
     private final AtomicBoolean hasUpdates = new AtomicBoolean();
 
     public BaseManager(Plugin plugin) {
         mergeDistance = plugin.getConfig().getInt("base_merge_distance", 20);
         reload(plugin);
-        int periodTicks = plugin.getConfig().getInt("base_update_task_period", 60) * 20;
+        int periodTicks = plugin.getConfig().getInt("base_update_task_period", 10) * 20;
         Bukkit.getScheduler().runTaskTimer(plugin, getUpdateTask(plugin), periodTicks, periodTicks);
     }
 
@@ -67,8 +67,8 @@ public class BaseManager {
                 .filter(b -> b.getLocation().distance(player.getLocation()) < mergeDistance)
                 .findFirst()
                 .orElseGet(() -> {
-                    nextId++;
-                    Base base = new Base(player.getLocation(), new HashMap<>(), null, nextId);
+                    lastId++;
+                    Base base = new Base(player.getLocation(), new HashMap<>(), null, lastId);
                     bases.add(base);
                     Bukkit.getLogger().info("[paxterya] A new base has been created at " + base.getLocation().getBlockX() + " " + base.getLocation().getBlockY());
                     return base;
@@ -85,6 +85,7 @@ public class BaseManager {
         bases.forEach(base -> {
             base.getOwners().forEach((uuid, s) -> playerBases.put(uuid, base));
         });
+        lastId = bases.stream().mapToLong(Base::getId).max().orElse(-1);
         hasUpdates.compareAndExchange(false, true);
     }
 

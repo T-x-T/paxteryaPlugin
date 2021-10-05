@@ -32,9 +32,9 @@ public class BaseDataLoader {
 
     private static Base loadBase(FileConfiguration config, String key) {
 
-        int id;
+        long id;
         try {
-            id = Integer.parseInt(key);
+            id = Long.parseLong(key);
         } catch (NumberFormatException e) {
             Bukkit.getLogger().severe("Malformed id for '" + key + "' (must be an integer)");
             return null;
