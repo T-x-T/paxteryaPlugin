@@ -69,7 +69,7 @@ public class BaseDrawer {
      * @param cs The console command sender
      */
     private static void drawBase(Base base, PluginCommand markerCommand, CommandSender cs) {
-        Bukkit.getLogger().info("Drawing '" + base.getName() + "'");
+        Bukkit.getLogger().fine("Drawing '" + base.getName() + "'");
 
         String[] args = new String[]{"add",
                 "x:" + base.getLocation().getBlockX(),
@@ -80,7 +80,7 @@ public class BaseDrawer {
                 "label:\"" + base.getName() + "\"",
                 "set:bases", "icon:tower"};
 
-        Bukkit.getLogger().info(StringUtils.join(args, " "));
+        Bukkit.getLogger().finer(StringUtils.join(args, " "));
         boolean success = markerCommand.execute(cs, "dmarker", args);
 
         if (!success) Bukkit.getLogger().warning("Failed to draw '" + base.getName() + "'");

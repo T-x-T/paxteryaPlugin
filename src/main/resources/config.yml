@@ -1,3 +1,5 @@
+logLevel: INFO
+
 roles:
   -
     id: '3'

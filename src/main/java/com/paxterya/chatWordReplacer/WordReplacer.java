@@ -16,7 +16,7 @@ public class WordReplacer {
     public WordReplacer(JavaPlugin plugin) {
         this.replacerMap = (Map<String, String>) plugin.getConfig().getList("word_replacer_rules").get(0);
         this.broadcast = plugin.getConfig().getBoolean("word_replacer_broadcast");
-        Bukkit.getLogger().log(Level.INFO, "[WordReplacer] Broadcast mode set to " + broadcast);
+        Bukkit.getLogger().info("[WordReplacer] Broadcast mode set to " + broadcast);
     }
 
     public Component replaceWords(TextComponent message, Player player) {

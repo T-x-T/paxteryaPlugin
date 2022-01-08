@@ -21,8 +21,11 @@ import com.paxterya.region.RegionChangeListener;
 import com.paxterya.region.RegionManager;
 import com.paxterya.role.PlayerRoleUpdater;
 import com.paxterya.role.Roles;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.logging.Level;
 
 public class PaxteryaPlugin extends JavaPlugin {
 
@@ -41,6 +44,7 @@ public class PaxteryaPlugin extends JavaPlugin {
   @Override
   public void onEnable(){
     this.saveDefaultConfig();
+    initLogger();
 
     this.tablistNameWrapper = new TablistNameWrapper(this);
     this.allRoles = new Roles(this);
@@ -151,6 +155,7 @@ public class PaxteryaPlugin extends JavaPlugin {
   public void reloadPaxteryaConfig(){
     afkPlayerKicker.stop();
     this.reloadConfig();
+    initLogger();
     PaxteryaPlugin plugin = this;
     new BukkitRunnable(){
       @Override
@@ -165,6 +170,13 @@ public class PaxteryaPlugin extends JavaPlugin {
 
     baseManager.reload(this);
     BaseDrawer.drawBasesLater(this, baseManager.getBases(), 32);
+  }
+
+  private void initLogger() {
+    Level level = Level.parse(getConfig().getString("logLevel", "INFO"));
+    if (level == null) level = Level.INFO;
+    Bukkit.getLogger().setLevel(level);
+    Bukkit.getLogger().log(level, "[paxterya] Log level set to " + level.getName());
   }
 
 }

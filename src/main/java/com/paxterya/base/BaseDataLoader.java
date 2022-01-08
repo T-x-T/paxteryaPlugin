@@ -96,7 +96,7 @@ public class BaseDataLoader {
         File customConfigFile = new File(plugin.getDataFolder(), "bases.yml");
 
         plugin.saveResource("bases.yml", true);
-        Bukkit.getLogger().warning("[paxterya] Writing data file...");
+        Bukkit.getLogger().info("[paxterya] Writing data file...");
 
         try {
             config.save(customConfigFile);

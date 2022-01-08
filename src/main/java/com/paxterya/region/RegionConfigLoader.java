@@ -85,7 +85,7 @@ public class RegionConfigLoader {
             shape = getRectangle(key, config);
         }
         if (shape == null) {
-            Bukkit.getLogger().warning("Region shape definition for '"+key+"' is invalid, skipping");
+            Bukkit.getLogger().severe("Region shape definition for '"+key+"' is invalid, skipping");
             return null;
         }
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Contains the static dynmap region draw method
@@ -76,7 +77,7 @@ public class RegionDrawer {
      */
     private static void drawRegion(Region region, int regionY, PluginCommand markerCommand, CommandSender cs) {
         if (region.getOrDefault("draw", "true").equalsIgnoreCase("true")) {
-            Bukkit.getLogger().info("Drawing '" + region.getId() + "'");
+            Bukkit.getLogger().fine("Drawing '" + region.getId() + "'");
             if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
                 // dmap area
                 List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
@@ -91,7 +92,7 @@ public class RegionDrawer {
                     args.add(e.getKey() + ":" + e.getValue());
                 }
 
-                Bukkit.getLogger().info(StringUtils.join(args, " "));
+                Bukkit.getLogger().finer(StringUtils.join(args, " "));
                 markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
             } else {
                 // dmap circle
@@ -106,7 +107,7 @@ public class RegionDrawer {
                     args.add(e.getKey() + ":" + e.getValue());
                 }
 
-                Bukkit.getLogger().info(StringUtils.join(args, " "));
+                Bukkit.getLogger().finer(StringUtils.join(args, " "));
                 markerCommand.execute(cs, "dmarker", args.toArray(new String[0]));
             }
         }

@@ -54,7 +54,7 @@ public class BaseManager {
         base.removeOwner(player);
         if (base.getOwners().size() == 0) {
             bases.remove(base);
-            Bukkit.getLogger().info("[paxterya] Base at " + base.getLocation().getBlockX() + " " + base.getLocation().getBlockY() + " has been abandoned");
+            Bukkit.getLogger().fine("[paxterya] Base at " + base.getLocation().getBlockX() + " " + base.getLocation().getBlockY() + " has been abandoned");
         }
         playerBases.remove(player.getUniqueId());
         hasUpdates.compareAndExchange(false, true);
@@ -70,7 +70,7 @@ public class BaseManager {
                     lastId++;
                     Base base = new Base(player.getLocation(), new HashMap<>(), null, lastId);
                     bases.add(base);
-                    Bukkit.getLogger().info("[paxterya] A new base has been created at " + base.getLocation().getBlockX() + " " + base.getLocation().getBlockY());
+                    Bukkit.getLogger().fine("[paxterya] A new base has been created at " + base.getLocation().getBlockX() + " " + base.getLocation().getBlockY());
                     return base;
                 });
     }
