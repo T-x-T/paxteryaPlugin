@@ -61,7 +61,7 @@ public class RegionDrawer {
         markerCommand.execute(cs, "dmarker", new String[]{"deleteset", "regions"});
         markerCommand.execute(cs, "dmarker", new String[]{"addset", "regions"});
 
-        regions.forEach(region -> drawRegion(region, markerCommand, cs));
+        regions.forEach(region -> drawRegion(region, 64, markerCommand, cs));
 
         Bukkit.getLogger().info("[paxterya] dynmap region drawing complete");
     }
@@ -70,17 +70,18 @@ public class RegionDrawer {
     /**
      * Draws a region to dynmap if 'draw' not set to 'false', and then recursively draws its subregions.
      * @param region The region to draw
+     * @param regionY The y level at which to draw it. We want this to be bigger for subregions, so they get drawn on top
      * @param markerCommand The dmarker command
      * @param cs The console command sender
      */
-    private static void drawRegion(Region region, PluginCommand markerCommand, CommandSender cs) {
+    private static void drawRegion(Region region, int regionY, PluginCommand markerCommand, CommandSender cs) {
         if (region.getOrDefault("draw", "true").equalsIgnoreCase("true")) {
             Bukkit.getLogger().info("Drawing '" + region.getId() + "'");
             if (region.getType() == RegionType.POLYGON || region.getType() == RegionType.RECTANGLE) {
                 // dmap area
                 List<Point2D> corners = region.getType() == RegionType.POLYGON ? ((Polygon) region.getArea()).getCorners() : ((Rectangle) region.getArea()).getCorners();
                 corners.forEach(p -> {
-                    String[] args = new String[]{"addcorner", p.getX() + "", "64", p.getY() + "", region.getDimension()};
+                    String[] args = new String[]{"addcorner", p.getX() + "", regionY + "", p.getY() + "", region.getDimension()};
                     markerCommand.execute(cs, "dmarker", args);
                 });
 
@@ -98,7 +99,7 @@ public class RegionDrawer {
                 double radius = ((Circle) region.getArea()).getRadius();
 
                 List<String> args = new ArrayList<>(Arrays.asList(
-                        "addcircle", "x:" + center.getX(), "y:64", "z:" + center.getY(), "world:" + region.getDimension(), "radiusx:" + radius, "radiusz:" + radius,
+                        "addcircle", "x:" + center.getX(), "y:" + regionY, "z:" + center.getY(), "world:" + region.getDimension(), "radiusx:" + radius, "radiusz:" + radius,
                         "id:" + region.getId(), "label:\"" + region.getName() + "\"", "set:regions"));
 
                 for (Map.Entry<String, String> e : region.getArgs().entrySet()) {
@@ -110,6 +111,6 @@ public class RegionDrawer {
             }
         }
         // draw subregions recursively
-        region.getSubRegions().forEach(r -> drawRegion(r, markerCommand, cs));
+        region.getSubRegions().forEach(r -> drawRegion(r, regionY + 1, markerCommand, cs));
     }
 }
