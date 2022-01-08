@@ -33,7 +33,9 @@ public class RegionConfigLoader {
         regions.forEach(region -> {
             String containingRegion = region.getArgs().get("subregionof");
             if (containingRegion != null) {
-                regions.stream().filter(containing -> containing.getId().equals(containingRegion)).forEach(containing -> containing.getSubRegions().add(region));
+                regions.stream()
+                        .filter(containing -> containing.getId().equals(containingRegion))
+                        .forEach(containing -> containing.getSubRegions().add(region));
             }
         });
         // remove subregions from top-level regions list
@@ -87,13 +89,16 @@ public class RegionConfigLoader {
             return null;
         }
 
+        int minY = config.getInt(key + ".minY", -64);
+        int maxY = config.getInt(key + ".maxY", 320);
+
         // optional fields
         Map<String, String> optionalArgs = new HashMap<>();
         config.getConfigurationSection(key).getKeys(false).stream()
                 .filter(k -> !required.contains(k))
                 .forEach(k -> optionalArgs.put(k, config.getString(key + "." + k)));
 
-        return new Region(key, name, dimension, type, shape, new ArrayList<>(), optionalArgs);
+        return new Region(key, name, dimension, type, shape, minY, maxY, new ArrayList<>(), optionalArgs);
     }
 
 

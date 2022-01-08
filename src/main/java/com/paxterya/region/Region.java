@@ -25,12 +25,17 @@ public class Region {
 
     private Shape area;
 
+    private int minY, maxY;
+
     private List<Region> subRegions;
 
     private Map<String, String> args;
 
     public boolean contains(Location location) {
-        return location.getWorld().getName().equals(dimension) && area.contains(location);
+        return location.getWorld().getName().equals(dimension)
+                && location.getBlockY() <= maxY
+                && location.getBlockY() >= minY
+                && area.contains(location);
     }
 
     public boolean equals(Region region) {
